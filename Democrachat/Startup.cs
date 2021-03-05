@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Democrachat.Auth;
+using Democrachat.Chat;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,9 +34,11 @@ namespace Democrachat
                 });
             
             services.AddScoped<IAuthService, DbAuthService>();
+            services.AddScoped<ITopicNameService, DbTopicNameService>();
             services.AddSingleton<RegisterSpamCheckService>();
-            
+
             services.AddControllers();
+            services.AddSignalR();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Democrachat", Version = "v1"});
@@ -59,7 +62,11 @@ namespace Democrachat
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/hub/chat");
+            });
         }
     }
 }
