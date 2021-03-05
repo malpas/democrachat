@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Democrachat;
@@ -80,7 +81,9 @@ namespace DemocrachatTest
         {
             var response = await _client.PostAsync("/api/auth/register", null!);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            await _client.PostAsync("/api/auth/logout", null!);
             response = await _client.PostAsync("/api/auth/register", null!);
+            
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.Contains("recently", await response.Content.ReadAsStringAsync());
         }
@@ -137,6 +140,15 @@ namespace DemocrachatTest
                 new StringContent("{\"username\": \"username\", \"password\": \"existinguser\"}", Encoding.Default, "application/json"));
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.Contains("already taken", await response.Content.ReadAsStringAsync());
+        }
+
+        [Fact]
+        public async Task CannotRegisterWhenLoggedIn()
+        {
+            await _client.PostAsync("/api/auth/login",
+                JsonContent.Create(new {Username = "username", Password = "password"}));
+            var response = await _client.PostAsync("/api/auth/register", null!);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }

@@ -48,6 +48,10 @@ namespace Democrachat.Auth
         [HttpPost("register")]
         public async Task<IActionResult> Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return BadRequest("Already logged in");
+            }
             if (!_registerSpamCheckService.CheckIp(HttpContext.Connection.RemoteIpAddress))
             {
                 return BadRequest("You created a guest account recently");
