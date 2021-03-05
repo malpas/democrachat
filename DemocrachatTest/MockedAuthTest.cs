@@ -13,12 +13,15 @@ using Xunit;
 
 namespace DemocrachatTest
 {
-    public class AuthTest : IClassFixture<WebApplicationFactory<Startup>>
+    /// <summary>
+    /// Authentication tests using a mocked authorization service
+    /// </summary>
+    public class MockedAuthTest : IClassFixture<WebApplicationFactory<Startup>>
     {
         private HttpClient _client;
         private Mock<IAuthService> _authServiceMock;
 
-        public AuthTest(WebApplicationFactory<Startup> factory)
+        public MockedAuthTest(WebApplicationFactory<Startup> factory)
         {
             _authServiceMock = new Mock<IAuthService>();                   
             _authServiceMock.Setup(s => s.AttemptLogin("username", "password"))
