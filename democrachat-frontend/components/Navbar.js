@@ -2,6 +2,7 @@ import { useNavigate } from "@reach/router"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect } from "react"
 import GlobalContext from "../state"
+import logo from "url:../img/logo-dark.svg"
 
 const Navbar = observer(() => {
     const state = useContext(GlobalContext)
@@ -18,7 +19,8 @@ const Navbar = observer(() => {
 
     return state.auth.username ?
         <div className="container">
-        <p>Democrachat <strong style={{ fontWeight: "bold", cursor: "pointer" }} onClick={logout}>Logout</strong></p >
+            <img src={logo} className="logo" />
+            <strong style={{ fontWeight: "bold", cursor: "pointer", marginLeft: "1em" }} onClick={logout}>Logout</strong>
         </div>
         : null
 })

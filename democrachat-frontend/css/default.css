@@ -6,6 +6,7 @@
 @import "./components/dramatic-blurb.css";
 @import "./components/vertical-center.css";
 @import "./components/container.css";
+@import "./components/logo.css";
 
 body {
     background-color: #ddd;
@@ -30,6 +31,14 @@ input {
 
 .mt-3 {
     margin-top: 1em;
+}
+
+.mb-2 {
+    margin-bottom: 0.5em;
+}
+
+.ml-3 {
+    margin-left: 1em;
 }
 
 .text-white {
