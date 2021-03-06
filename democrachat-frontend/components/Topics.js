@@ -16,7 +16,7 @@ const Topics = observer(() => {
         navigate(`/chat/${topic}`)
     }
 
-    return <div>
+    return <div class="container">
         {state.chat.topics.map(topic => <button class="button" key={topic} onClick={() => joinTopic(topic)}>{topic}</button>)}
     </div>
 })

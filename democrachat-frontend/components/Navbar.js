@@ -17,7 +17,9 @@ const Navbar = observer(() => {
     }
 
     return state.auth.username ?
+        <div className="container">
         <p>Democrachat <strong style={{ fontWeight: "bold", cursor: "pointer" }} onClick={logout}>Logout</strong></p >
+        </div>
         : null
 })
 

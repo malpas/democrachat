@@ -5,6 +5,7 @@
 @import "./components/button.css";
 @import "./components/dramatic-blurb.css";
 @import "./components/vertical-center.css";
+@import "./components/container.css";
 
 body {
     background-color: #ddd;

@@ -19,16 +19,16 @@ const Chat = observer(({ topic }) => {
     }
 
     return (
-        <div>
-            <form onSubmit={onSend} class="form">
-                <input type="text" value={message} onChange={ev => { setMessage(ev.target.value) }}></input>
-                <input type="submit" class="button" value="Send"></input>
-            </form>
+        <div className="container">
             <div>
                 {state.chat.messages.filter(message => message.topic === topic).map(message =>
                     <p><strong>{message.username}</strong> {message.text}</p>
                 )}
             </div>
+            <form onSubmit={onSend} class="form">
+                <input type="text" value={message} onChange={ev => { setMessage(ev.target.value) }}></input>
+                <input type="submit" class="button" value="Send"></input>
+            </form>
         </div>
     )
 })
