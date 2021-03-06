@@ -1,0 +1,13 @@
+.action {
+    display: block;
+    font-weight: bold;
+    user-select: none;
+    cursor: pointer;
+    color: #4aa1aa;
+}
+.action:hover {
+    color: #69c1ca;
+}
+.action:active {
+    color: #528edc;
+}

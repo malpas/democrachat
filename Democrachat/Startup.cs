@@ -55,9 +55,23 @@ namespace Democrachat
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Democrachat v1"));
             }
 
-            app.UseHttpsRedirection();
+            if (env.IsProduction())
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
+
+            if (env.IsDevelopment())
+            {
+                app.UseCors(builder =>
+                {
+                    builder.WithOrigins("http://localhost:1234")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+            }
 
             app.UseAuthentication();
             app.UseAuthorization();

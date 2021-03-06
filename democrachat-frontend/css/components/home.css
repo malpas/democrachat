@@ -1,0 +1,41 @@
+.home {
+    background-size: cover;
+    display: grid;
+        grid-template-areas: 
+            "header"
+            "blurb"
+            "login";
+    padding: 1em;
+}
+
+.home__header {
+    grid-area: header;
+}
+
+.home__blurb {
+    grid-area: blurb;
+}
+
+.home__login {
+    background-color: #fff;
+    grid-area: login;
+    margin-top: 1em;
+    border-radius: 0.25em;
+}
+
+
+@media (min-width: 650px) {
+    .home {
+        grid-template-areas: 
+            "header header"
+            "blurb login";
+        grid-template-columns: 3fr 2fr;
+    }
+}
+
+@media (min-width: 1000px) {
+    .home {
+        max-width: 1000px;
+        margin: auto;
+    }
+}

@@ -1,0 +1,13 @@
+.dramatic-text {
+    display: inline-block;
+    font-size: 2em;
+    margin: 0 0.5em 0 0;
+    text-indent: 1em;
+    font-family: 'Open Sans', sans-serif;
+}
+
+@media (min-width: 650px) {
+    .dramatic-text {
+        font-size: 3em;
+    }
+}
