@@ -24,5 +24,12 @@ namespace Democrachat.Chat
             var userId = int.Parse(Context.User.FindFirstValue("Id"));
             Clients.Group(topic).SendAsync("ReceiveMessage", topic, _authService.GetUserById(userId).Username, message);
         }
+
+        public void JoinTopic(string topic)
+        {
+            if (!_topicNameService.IsValidTopic(topic))
+                return;
+            Groups.AddToGroupAsync(Context.ConnectionId, topic);
+        }
     }
 }

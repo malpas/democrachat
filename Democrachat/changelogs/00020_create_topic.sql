@@ -1,0 +1,3 @@
+CREATE TABLE topic (
+    name TEXT PRIMARY KEY
+)
