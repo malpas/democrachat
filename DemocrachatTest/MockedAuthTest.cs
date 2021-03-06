@@ -122,12 +122,12 @@ namespace DemocrachatTest
         {
             await _client.PostAsync("/api/auth/register", null!);
             var response = await _client.PostAsync("/api/auth/finalize", 
-                new StringContent("{\"username\": \"johndoe\", \"password\": \"newuser\"}", Encoding.Default, "application/json"));
+                new StringContent("{\"username\": \"johndoe\", \"password\": \"newuserpass\"}", Encoding.Default, "application/json"));
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             
             await _client.PostAsync("/api/auth/logout", null!);
             response = await _client.PostAsync("/api/auth/login",
-                new StringContent("{\"username\": \"johndoe\", \"password\": \"newuser\"}",
+                new StringContent("{\"username\": \"johndoe\", \"password\": \"newuserpass\"}",
                     Encoding.Default, "application/json"));
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }

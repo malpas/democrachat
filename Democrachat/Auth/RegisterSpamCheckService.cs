@@ -24,7 +24,7 @@ namespace Democrachat.Auth
         private void ClearOldEntries()
         {
             _entries = _entries
-                .Where(entry => DateTime.Now > entry.time - TimeSpan.FromMinutes(15))
+                .Where(entry => DateTime.Now < entry.time + TimeSpan.FromMinutes(15))
                 .ToList();
         }
 

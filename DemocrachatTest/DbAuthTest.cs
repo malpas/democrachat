@@ -33,14 +33,14 @@ namespace DemocrachatTest
             
             await _client.PostAsync("/api/auth/register", null!);
             await _client.PostAsync("/api/auth/finalize", 
-                JsonContent.Create(new { Username = username, Password = "password"}));
+                JsonContent.Create(new { Username = username, Password = "thepassword"}));
             await _client.PostAsync("/api/auth/logout", null!);
             
             var loginResponse = await _client.PostAsync("/api/auth/login",
                 JsonContent.Create(new { Username = username, Password = "notpassword" }));
             Assert.Equal(HttpStatusCode.BadRequest, loginResponse.StatusCode);
             loginResponse = await _client.PostAsync("/api/auth/login",
-                JsonContent.Create(new { Username = username, Password = "password" }));
+                JsonContent.Create(new { Username = username, Password = "thepassword" }));
             Assert.Equal(HttpStatusCode.OK, loginResponse.StatusCode);
         }
     }
