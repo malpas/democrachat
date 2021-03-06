@@ -26,7 +26,7 @@ namespace DemocrachatTest
         {
             _authServiceMock = new Mock<IAuthService>();                   
             _authServiceMock.Setup(s => s.AttemptLogin("username", "password"))
-                .Returns(new UserData { Username = "username", Id = 10});
+                .Returns(new UserData { Username = "username", Id = 10, Hash = "hashashbecausenotguest"});
             _authServiceMock.Setup(s => s.RegisterUser())
                 .Returns(new RegistrationResult(10));
             _authServiceMock.Setup(s => s.GetUserById(10))
@@ -96,7 +96,7 @@ namespace DemocrachatTest
                     Encoding.Default, "application/json"));
             var response = await _client.GetAsync("/api/auth/info");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal("{\"username\":\"username\"}", await response.Content.ReadAsStringAsync());
+            Assert.Equal("{\"username\":\"username\",\"isGuest\":true}", await response.Content.ReadAsStringAsync());
         }
         
         [Fact]

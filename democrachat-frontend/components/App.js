@@ -5,6 +5,7 @@ import { Router } from '@reach/router'
 import Topics from './Topics'
 import Chat from './Chat'
 import Navbar from './Navbar'
+import FinaliseModal from './FinaliseModal'
 
 function App() {
     return (

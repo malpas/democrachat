@@ -57,8 +57,10 @@ class ChatStore {
 }
 
 class AuthStore {
-    username = null
-    errorText = null
+    username
+    errorText
+    finaliseErrors
+    isGuest
 
     constructor(root) {
         this.root = root
@@ -71,7 +73,10 @@ class AuthStore {
                 this.errorText = err.response.data
                 return Promise.reject(err)
             })
-            .then(_ => this.fetchUserInfo())
+            .then(_ => {
+                this.errorText = ""
+                this.fetchUserInfo()
+            })
     }
 
     register() {
@@ -82,6 +87,7 @@ class AuthStore {
     }
 
     logout() {
+        this.errorText = ""
         return axios.post("/api/auth/logout", null, { withCredentials: true })
     }
 
@@ -90,8 +96,22 @@ class AuthStore {
             .then(resp => {
                 runInAction(() => {
                     this.username = resp.data.username
+                    this.isGuest = resp.data.isGuest
                 })
             })
+    }
+
+    finalise(username, password) {
+        return axios.post("/api/auth/finalize", { username, password }, { withCredentials: true })
+            .catch(err => {
+                if (err.response.data.errors) {
+                    runInAction(() => {
+                        this.finaliseErrors = Object.values(err.response.data.errors)
+                    })
+                }
+                return Promise.reject()
+            })
+            .then(() => this.fetchUserInfo)
     }
 }
 

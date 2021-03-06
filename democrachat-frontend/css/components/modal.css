@@ -1,0 +1,50 @@
+.modal__wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.9);
+    width: 100vw;
+    height: 100vh;
+}
+
+.modal__inner {
+    display: grid;
+    grid-template-areas: 
+        "title . close"
+        ". . ."
+        "content content content";
+    grid-template-columns: 1fr 2em max-content;
+    grid-template-rows: auto 0.25em auto;
+    align-items: center;
+    gap: 0.25em;
+    background-color: #fff;
+    padding: 1em;
+}
+
+.modal__content {
+    grid-area: content;
+}
+
+.modal__title {
+    grid-area: title;
+    margin: 0;
+}
+
+.modal__close {
+    grid-area: close;
+    background-color: #333;
+    padding: 0 0.25em;
+    margin: 0;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    font-size: 0.8em;
+}
+
+@media (min-width: 800px) {
+    .modal__wrapper {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+    }
+}

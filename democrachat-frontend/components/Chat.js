@@ -1,11 +1,13 @@
-import { JsonHubProtocol } from "@microsoft/signalr"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import GlobalContext from "../state"
+import FinaliseModal from "./FinaliseModal"
 
 const Chat = observer(({ topic }) => {
     const [message, setMessage] = useState("")
     const state = useContext(GlobalContext)
+
+    const [isFinaliseOpen, setIsFinaliseOpen] = useState()
 
     useEffect(() => {
         state.chat.connect()
@@ -18,8 +20,19 @@ const Chat = observer(({ topic }) => {
         setMessage("")
     }
 
+    const finaliseUser = (username, password) => {
+        state.auth.finalise(username, password).then(() => setIsFinaliseOpen(false))
+    }
+
     return (
         <div className="container">
+            <FinaliseModal isOpen={isFinaliseOpen}
+                onClose={() => setIsFinaliseOpen(false)}
+                onSubmit={finaliseUser}
+                errors={state.auth.finaliseErrors} />
+            {state.auth.isGuest ? (
+                <strong class="action" onClick={() => setIsFinaliseOpen(true)}>Finalise your account</strong>
+            ) : null}
             <div>
                 {state.chat.messages.filter(message => message.topic === topic).map(message =>
                     <p><strong>{message.username}</strong> {message.text}</p>
