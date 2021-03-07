@@ -39,13 +39,21 @@ namespace DemocrachatTest
                 Clients = _mockClients.Object
             };
         }
-        
+
         [Fact]
         public void ClientsReceiveMessages()
         {
             _hub.SendMessage("abc", "test");
             _mockClients.Verify(c => c.Group("abc").SendCoreAsync("ReceiveMessage", new object?[] {"abc", "john", "test"}, default),
                 Times.Once);
+        }
+
+        [Fact]
+        public void BlankMessagesNotSent()
+        {
+            _hub.SendMessage("abc", "");
+            _mockClients.Verify(c => c.Group("abc").SendCoreAsync("ReceiveMessage", It.IsAny<object?[]>(), default),
+                Times.Never);
         }
 
         [Fact]

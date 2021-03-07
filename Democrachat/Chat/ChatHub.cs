@@ -1,6 +1,7 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Democrachat.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -24,6 +25,8 @@ namespace Democrachat.Chat
 
         public void SendMessage(string topic, string message)
         {
+            if (message.IsNullOrEmpty())
+                return;
             if (!_topicNameService.IsValidTopic(topic))
                 return;
             var userId = int.Parse(Context.User.FindFirstValue("Id"));
