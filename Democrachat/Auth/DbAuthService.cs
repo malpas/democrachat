@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Democrachat.Auth.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -59,6 +60,22 @@ namespace Democrachat.Auth
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
             return conn.QueryFirst<bool>("SELECT EXISTS (SELECT * FROM account WHERE username = @Username)",
                 new {Username = username});
+        }
+
+        public IEnumerable<string> BatchGetUsernamesByIds(IEnumerable<int> ids)
+        {
+            var query = "";
+            var idList = ids.AsList();
+            for (int i = 0; i < idList.Count; ++i)
+            {
+                query += $"SELECT username FROM account WHERE id = {idList[i]} ";
+                if (i < idList.Count - 1)
+                {
+                    query += " UNION ";
+                }
+            }
+            using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
+            return conn.Query<string>(query);
         }
     }
 }

@@ -15,7 +15,7 @@ const Navbar = observer(() => {
 
     const logout = () => {
         state.auth.logout()
-        navigate("/")
+            .then(() => navigate("/"))
     }
 
     return state.auth.username ?

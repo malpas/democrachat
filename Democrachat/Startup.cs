@@ -33,9 +33,10 @@ namespace Democrachat
                     };
                 });
             
-            services.AddScoped<IAuthService, DbAuthService>();
+            services.AddSingleton<IAuthService, DbAuthService>();
             services.AddScoped<ITopicNameService, DbTopicNameService>();
             services.AddSingleton<RegisterSpamCheckService>();
+            services.AddSingleton<ActiveUserService>();
 
             services.AddControllers();
             services.AddSignalR();

@@ -12,12 +12,12 @@ namespace DemocrachatTest
     /// <summary>
     /// Tests for chat functionality
     /// </summary>
-    public class ChatTest
+    public class MessageTest
     {
         private ChatHub _hub;
         private Mock<IHubCallerClients> _mockClients;
 
-        public ChatTest()
+        public MessageTest()
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new [] {new Claim("Id", "10")}));
             var mockContext = new Mock<HubCallerContext>();
@@ -32,7 +32,8 @@ namespace DemocrachatTest
                 .Returns(new UserData {Username = "john"});
             var mockTopicValidator = new Mock<ITopicNameService>();
             mockTopicValidator.Setup(s => s.IsValidTopic("abc")).Returns(true);
-            _hub = new ChatHub(mockAuthService.Object, mockTopicValidator.Object)
+            var activeUserService = new ActiveUserService(mockAuthService.Object);
+            _hub = new ChatHub(mockAuthService.Object, mockTopicValidator.Object, activeUserService)
             {
                 Context = mockContext.Object, 
                 Clients = _mockClients.Object

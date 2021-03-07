@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Democrachat.Auth.Models;
 
 namespace Democrachat.Auth
@@ -9,5 +10,6 @@ namespace Democrachat.Auth
         UserData GetUserById(int id);
         void FinalizeNewUser(int id, string username, string password);
         bool IsUsernameTaken(string username);
+        IEnumerable<string> BatchGetUsernamesByIds(IEnumerable<int> id);
     }
 }

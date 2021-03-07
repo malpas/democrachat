@@ -45,7 +45,7 @@ namespace DemocrachatTest
             _client = factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureTestServices(services => {
-                    services.AddScoped(_ => _authServiceMock.Object); 
+                    services.AddSingleton(_ => _authServiceMock.Object); 
                 });
             }).CreateClient();
         }

@@ -24,18 +24,29 @@ class ChatStore {
         if (this.connection?.state == HubConnectionState.Connected) return Promise.resolve();
 
         this.connection = new HubConnectionBuilder()
-            .withUrl("/hub/chat", { transport: HttpTransportType.ServerSentEvents }) // TODO TRY REMOVING TRANSPORT
+            .withUrl("/hub/chat", { transport: HttpTransportType.ServerSentEvents })
             .withAutomaticReconnect()
             .configureLogging(LogLevel.Debug)
             .build();
 
-        this.connection.on("ReceiveMessage", (topic, username, text) => {
+        this._setupConnection(this.connection)
+        this.connection.onreconnected(() => this._setupConnection(this.connection))
+
+        return this.connection.start()
+    }
+
+    _setupConnection(connection) {
+        connection.on("ReceiveMessage", (topic, username, text) => {
             runInAction(() => {
                 this.messages = [...this.messages, { topic, username, text }]
             })
         })
 
-        return this.connection.start()
+    }
+
+    disconnect() {
+        if (this.connection?.state != HubConnectionState.Connected) return Promise.resolve();
+        return this.connection.stop()
     }
 
     getTopics() {
@@ -47,8 +58,16 @@ class ChatStore {
             })
     }
 
+    getActiveUsers(topic) {
+        return axios.get(`/api/topicActivity/${topic}`, { withCredentials: true })
+            .then(resp => {
+                return Promise.resolve(resp.data)
+            })
+            .catch(err => Promise.reject());
+    }
+
     joinTopic(name) {
-        this.connection.send("JoinTopic", name)
+        return this.connection.send("JoinTopic", name)
     }
 
     send(topic, message) {
@@ -88,7 +107,10 @@ class AuthStore {
 
     logout() {
         this.errorText = ""
-        return axios.post("/api/auth/logout", null, { withCredentials: true })
+
+        return axios.post("/api/auth/logout", null, { withCredentials: true }).then(() => {
+            this.root.chat.disconnect()
+        })
     }
 
     fetchUserInfo() {
