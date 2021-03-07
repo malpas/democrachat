@@ -24,13 +24,19 @@ namespace DemocrachatTest
 
         public MockedAuthTest(WebApplicationFactory<Startup> factory)
         {
-            _authServiceMock = new Mock<IAuthService>();                   
+            _authServiceMock = new Mock<IAuthService>();
+            var userData = new UserData { Username = "username", Id = 10, Hash = "hashashbecausenotguest"};
             _authServiceMock.Setup(s => s.AttemptLogin("username", "password"))
-                .Returns(new UserData { Username = "username", Id = 10, Hash = "hashashbecausenotguest"});
+                .Returns(userData);
             _authServiceMock.Setup(s => s.RegisterUser())
-                .Returns(new RegistrationResult(10));
+                .Returns(() =>
+                {
+                    _authServiceMock.Setup(s => s.GetUserById(20))
+                        .Returns(new UserData {Username = "user23423", Hash = null, Id = 20});
+                    return new RegistrationResult(20);
+                });
             _authServiceMock.Setup(s => s.GetUserById(10))
-                .Returns(new UserData { Username = "username", Id = 10});
+                .Returns(userData);
             _authServiceMock.Setup(s => s.IsUsernameTaken("username")).Returns(true);
             // Simulate user finalization
             _authServiceMock.Setup(s => s.FinalizeNewUser(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
@@ -96,7 +102,7 @@ namespace DemocrachatTest
                     Encoding.Default, "application/json"));
             var response = await _client.GetAsync("/api/auth/info");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal("{\"username\":\"username\",\"isGuest\":true}", await response.Content.ReadAsStringAsync());
+            Assert.Equal("{\"username\":\"username\",\"isGuest\":false}", await response.Content.ReadAsStringAsync());
         }
         
         [Fact]
@@ -140,6 +146,16 @@ namespace DemocrachatTest
                 new StringContent("{\"username\": \"username\", \"password\": \"existinguser\"}", Encoding.Default, "application/json"));
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.Contains("already taken", await response.Content.ReadAsStringAsync());
+        }
+
+        [Fact]
+        public async Task CannotFinalizeNonGuestAccount()
+        {
+            await _client.PostAsync("/api/auth/login",
+                JsonContent.Create(new {Username = "username", Password = "password"}));
+            var response = await _client.PostAsync("/api/auth/finalize",
+                JsonContent.Create(new {Username = "newuser", Password = "newpassword"}));
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]

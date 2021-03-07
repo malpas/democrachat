@@ -100,10 +100,11 @@ namespace Democrachat.Auth
         public IActionResult Finalize([FromBody] Register register)
         {
             var id = int.Parse(HttpContext.User.FindFirstValue("Id"));
+            var userData = _authService.GetUserById(id);
+            if (!userData.IsGuest)
+                return BadRequest($"Cannot rename full account");
             if (_authService.IsUsernameTaken(register.Username))
-            {
                 return BadRequest($"User \"{register.Username}\" is already taken");
-            }
             _authService.FinalizeNewUser(id, register.Username, register.Password);
             return Ok("Welcome");
         }
