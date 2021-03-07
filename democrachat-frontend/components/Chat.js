@@ -42,9 +42,6 @@ const Chat = observer(({ topic }) => {
                 onClose={() => setIsFinaliseOpen(false)}
                 onSubmit={finaliseUser}
                 errors={state.auth.finaliseErrors} />
-            {state.auth.isGuest ? (
-                <strong class="action" onClick={() => setIsFinaliseOpen(true)}>Finalise your account</strong>
-            ) : null}
             <div className="chat__messages">
                 <h2>@{topic}</h2>
                 <div className="chat__messages__list">
@@ -62,6 +59,9 @@ const Chat = observer(({ topic }) => {
             <div class="chat__users">
                 <h2>Users</h2>
                 <UserList usernames={activeUsers} />
+                {state.auth.isGuest ? (
+                    <strong class="action" onClick={() => setIsFinaliseOpen(true)}>Finalise your account</strong>
+                ) : null}
             </div>
         </div>
     )

@@ -133,7 +133,7 @@ class AuthStore {
                 }
                 return Promise.reject()
             })
-            .then(() => this.fetchUserInfo)
+            .then(() => this.fetchUserInfo())
     }
 }
 
