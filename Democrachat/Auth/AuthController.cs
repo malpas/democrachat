@@ -54,7 +54,7 @@ namespace Democrachat.Auth
             }
             if (!_registerSpamCheckService.CheckIp(HttpContext.Connection.RemoteIpAddress))
             {
-                return BadRequest("You created a guest account recently");
+                return BadRequest("You created an account recently");
             }
             var result = _authService.RegisterUser();
             var identity = new ClaimsIdentity(new [] {new Claim("Id", result.UserId.ToString())},
