@@ -20,9 +20,13 @@ const Navbar = observer(() => {
 
     return state.auth.username ?
         <div className="container navbar">
-            <FinaliseModal></FinaliseModal>
-            <img src={logo} className="logo" />
-            <strong style={{ fontWeight: "bold", cursor: "pointer", marginLeft: "1em" }} onClick={logout}>Logout</strong>
+            <div className="navbar__left">
+                <img src={logo} className="logo" />
+            </div>
+            <div className="navbar__right">
+                <div>{state.auth.gold}G {state.auth.silver}S</div>
+                <div style={{ fontWeight: "bold", cursor: "pointer", marginLeft: "1em" }} class="button button--small" onClick={logout}>Logout</div>
+            </div>
         </div>
         : null
 })

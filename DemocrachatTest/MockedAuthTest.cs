@@ -102,7 +102,8 @@ namespace DemocrachatTest
                     Encoding.Default, "application/json"));
             var response = await _client.GetAsync("/api/auth/info");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal("{\"username\":\"username\",\"isGuest\":false}", await response.Content.ReadAsStringAsync());
+            Assert.Equal(new UserData { Username = "username", Gold = 0, Silver = 0}, 
+                await response.Content.ReadFromJsonAsync<UserData>());
         }
         
         [Fact]

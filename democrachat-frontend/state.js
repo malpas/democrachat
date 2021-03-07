@@ -76,6 +76,8 @@ class ChatStore {
 }
 
 class AuthStore {
+    gold
+    silver
     username
     errorText
     finaliseErrors
@@ -119,6 +121,8 @@ class AuthStore {
                 runInAction(() => {
                     this.username = resp.data.username
                     this.isGuest = resp.data.isGuest
+                    this.gold = resp.data.gold
+                    this.silver = resp.data.silver
                 })
             })
     }

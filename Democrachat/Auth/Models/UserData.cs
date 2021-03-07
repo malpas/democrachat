@@ -13,5 +13,8 @@ namespace Democrachat.Auth.Models
         
         [JsonIgnore]
         public string Hash { get; init; }
+
+        public int Gold { get; set; }
+        public int Silver { get; set; }
     }
 }

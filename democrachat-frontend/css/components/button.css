@@ -11,3 +11,7 @@
 .button:hover {
     background-color: #6f27ff;
 }
+
+.button--small {
+    font-size: 0.6em;
+}
