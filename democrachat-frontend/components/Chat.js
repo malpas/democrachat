@@ -37,7 +37,7 @@ const Chat = observer(({ topic }) => {
     }
 
     return (
-        <div className="container">
+        <div className="container chat">
             <FinaliseModal isOpen={isFinaliseOpen}
                 onClose={() => setIsFinaliseOpen(false)}
                 onSubmit={finaliseUser}
@@ -45,16 +45,24 @@ const Chat = observer(({ topic }) => {
             {state.auth.isGuest ? (
                 <strong class="action" onClick={() => setIsFinaliseOpen(true)}>Finalise your account</strong>
             ) : null}
-            <div>
-                {state.chat.messages.filter(message => message.topic === topic).map(message =>
-                    <p><strong>{message.username}</strong> {message.text}</p>
-                )}
+            <div className="chat__messages">
+                <h2>@{topic}</h2>
+                <div className="chat__messages__list">
+                    {state.chat.messages.filter(message => message.topic === topic).map(message =>
+                        <p className="chat__messages__message"><strong>{message.username}</strong> {message.text}</p>
+                    )}
+                </div>
             </div>
-            <form onSubmit={onSend} class="form">
-                <input type="text" value={message} onChange={ev => { setMessage(ev.target.value) }}></input>
-                <input type="submit" class="button" value="Send"></input>
-            </form>
-            <UserList usernames={activeUsers} />
+            <div class="chat__send">
+                <form onSubmit={onSend} class="form form--inline">
+                    <input type="text" value={message} onChange={ev => { setMessage(ev.target.value) }}></input>
+                    <input type="submit" class="button" value="Send"></input>
+                </form>
+            </div>
+            <div class="chat__users">
+                <h2>Users</h2>
+                <UserList usernames={activeUsers} />
+            </div>
         </div>
     )
 })

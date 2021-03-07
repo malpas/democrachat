@@ -19,7 +19,7 @@ const Navbar = observer(() => {
     }
 
     return state.auth.username ?
-        <div className="container">
+        <div className="container navbar">
             <FinaliseModal></FinaliseModal>
             <img src={logo} className="logo" />
             <strong style={{ fontWeight: "bold", cursor: "pointer", marginLeft: "1em" }} onClick={logout}>Logout</strong>

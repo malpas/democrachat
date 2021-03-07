@@ -3,8 +3,8 @@ import React from "react"
 function UserList({ usernames }) {
     return (
         <div>
-            <ul>
-                {usernames.map(username => <li>{username}</li>)}
+            <ul className="chat__userlist">
+                {usernames.map(username => <li className="chat__userlist__item">{username}</li>)}
             </ul>
         </div>
     )

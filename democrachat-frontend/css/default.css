@@ -8,9 +8,14 @@
 @import "./components/container.css";
 @import "./components/logo.css";
 @import "./components/modal.css";
+@import "./components/chat.css";
+@import "./components/navbar.css";
 
 body {
-    background-color: #ddd;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 800'%3E%3Cg %3E%3Ccircle fill='%23ffffff' cx='400' cy='400' r='600'/%3E%3Ccircle fill='%23fafafa' cx='400' cy='400' r='500'/%3E%3Ccircle fill='%23f5f5f5' cx='400' cy='400' r='400'/%3E%3Ccircle fill='%23f0f0f0' cx='400' cy='400' r='300'/%3E%3Ccircle fill='%23ebebeb' cx='400' cy='400' r='200'/%3E%3Ccircle fill='%23e6e6e6' cx='400' cy='400' r='100'/%3E%3C/g%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: cover;
     font-family: 'Lato', sans-serif;
     font-size: 21px;
     height: 100%;
@@ -26,12 +31,20 @@ input {
     margin: 1em;
 }
 
+.mt-0 {
+    margin-top: 0;
+}
+
 .mt-1 {
     margin-top: 0.25em;
 }
 
 .mt-3 {
     margin-top: 1em;
+}
+
+.mb-0 {
+    margin-bottom: 0;
 }
 
 .mb-2 {

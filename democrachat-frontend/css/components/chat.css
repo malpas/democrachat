@@ -1,0 +1,57 @@
+.chat {
+    display: grid;
+    gap: 0.5em;
+    grid-template-areas: 
+        "users"
+        "messages"
+        "send";
+}
+
+.chat__messages {
+    grid-area: messages;
+    background-color: #fff;
+    border-radius: 0.25em;
+    padding: 0 1em;
+}
+
+.chat__messages__list {
+    height: calc(100vh - 21em);
+    overflow-y: auto;
+}
+
+.chat__messages__message {
+    margin: 0.25em 0;
+}
+
+.chat__users {
+    grid-area: users;
+    padding-left: 1em;
+}
+
+.chat__userlist {
+    list-style: none;
+    padding: 0;
+}
+.chat__userlist__item {
+    font-weight: bold;
+    display: inline;
+    padding-right: 0.5em;
+}
+
+.chat__send {
+    grid-area: send;
+}
+
+@media (min-width: 800px) {
+    .chat {
+        height: calc(100vh - 6em);
+        grid-template-areas: 
+            "messages users"
+            "send .";
+        grid-template-rows: auto 3em;
+    }
+
+    .chat__messages__list {
+        height: calc(100vh - 15em);
+    }
+}
