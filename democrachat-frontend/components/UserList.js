@@ -1,6 +1,9 @@
 import React from "react"
 
 function UserList({ usernames }) {
+    if (usernames.length == 0) {
+        return <p>Very quiet.</p>
+    }
     return (
         <div>
             <ul className="chat__userlist">
