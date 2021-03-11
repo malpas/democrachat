@@ -5,10 +5,15 @@ function UserActions({ username, errors, resultMessage, onClose, onMute }) {
 
     const [silver, setSilver] = useState(0)
 
+    const submit = ev => {
+        ev.preventDefault()
+        onMute(username, silver)
+    }
+
     return <div class="user-actions">
         <div class="user-actions__header">
             <h3>{username}</h3>
-            <p onClick={onClose}>X</p>
+            <p onClick={onClose} className="pointer">X</p>
         </div>
         <div class="user-actions__errors">
             {resultMessage ? <p className="text-success">{resultMessage}</p> : null}
@@ -19,8 +24,10 @@ function UserActions({ username, errors, resultMessage, onClose, onMute }) {
                 : null}
         </div>
         <div class="user-actions__mute">
-            <input type="number" placeholder="silver" onChange={ev => setSilver(ev.target.value)} value={silver} />
-            <strong class="button" onClick={() => onMute(username, silver)}>Mute</strong>
+            <form className="form form--inline" onSubmit={submit}>
+                <input type="number" placeholder="silver" onChange={ev => setSilver(ev.target.value)} value={silver} />
+                <input type="submit" className="form__submit" value="Mute" />
+            </form>
         </div>
     </div>
 }

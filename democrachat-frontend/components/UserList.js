@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useState } from "react"
 import GlobalContext from "../state";
+import TopicBid from "./TopicBid";
 import UserActions from "./UserActions"
 
 const UserList = observer(({ usernames }) => {

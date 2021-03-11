@@ -37,7 +37,9 @@ namespace Democrachat
                 });
             
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITopicService, TopicService>();
             services.AddScoped<MuteService>();
+            services.AddScoped<TopicBidService>();
             services.AddScoped<ILogger, Logger>();
             services.AddSingleton<IAuthService, DbAuthService>();
             services.AddScoped<ITopicNameService, DbTopicNameService>();

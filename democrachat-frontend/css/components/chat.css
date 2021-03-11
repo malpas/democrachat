@@ -43,6 +43,8 @@
     font-weight: bold;
     display: inline;
     padding-right: 0.5em;
+    cursor: pointer;
+    color: #6f27ff;
 }
 
 .chat__send {

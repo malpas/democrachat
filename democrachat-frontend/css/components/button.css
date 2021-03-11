@@ -15,3 +15,14 @@
 .button--small {
     font-size: 0.6em;
 }
+
+.button--100w {
+    width: 100%;
+}
+
+.button--secondary {
+    background-color: #b66b6b;
+}
+.button--secondary:hover {
+    background-color: #c57e7e;
+}

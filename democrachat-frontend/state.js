@@ -68,7 +68,7 @@ class ChatStore {
             .then(resp => {
                 return Promise.resolve(resp.data)
             })
-            .catch(err => Promise.reject());
+            .catch(_ => Promise.reject());
     }
 
     joinTopic(name) {
@@ -147,6 +147,8 @@ class AuthStore {
 }
 
 class UserActionStore {
+    bidErrors = []
+    bidResult = ""
     userActionErrors = []
     userActionResult = ""
 
@@ -183,6 +185,33 @@ class UserActionStore {
                         this.userActionResult = ""
                     })
                 }, 2000)
+            })
+    }
+
+    topicBid(name, silver) {
+        runInAction(() => {
+            this.bidErrors = []
+            this.bidResult = ""
+        })
+        return axios.post("/api/topic/bid", { name, silver }, { withCredentials: true })
+            .catch(err => {
+                runInAction(() => {
+                    if (err.response.data.errors) {
+                        this.bidErrors = Object.values(err.response.data.errors)
+                    } else {
+                        this.bidErrors = [err.response.data]
+                    }
+                })
+                return Promise.reject()
+            })
+            .then(resp => {
+                this.root.auth.fetchUserInfo()
+                runInAction(() => {
+                    this.bidResult = resp.data
+                    setTimeout(() => {
+                        this.bidResult = ""
+                    }, 5000)
+                })
             })
     }
 }

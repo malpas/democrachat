@@ -1,0 +1,33 @@
+.topics {
+    display: grid;
+    grid-template-areas: 
+        "list"
+        "bid"
+        "log";
+    grid-template-columns: 1fr auto;
+    gap: 2em;
+}
+
+.topics__list {
+    grid-area: list;
+}
+
+.topics__bid {
+    grid-area: bid;
+}
+
+.topics__log {
+    grid-area: log;
+}
+
+@media (min-width: 700px) {
+    .topics {
+        grid-template-areas: 
+            "list list"
+            "bid log";
+        grid-template-columns: 1fr 1fr;
+    }
+    .topics__bid {
+        font-size: 0.9em;
+    }
+}

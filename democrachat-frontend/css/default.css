@@ -12,6 +12,7 @@
 @import "./components/navbar.css";
 @import "./components/hamburger.css";
 @import "./components/user-actions.css";
+@import "./components/topics.css";
 
 body {
     background-color: #ffffff;
@@ -71,7 +72,7 @@ input {
 }
 
 .text-success {
-    animation: success 2s infinite;
+    animation: success 4s infinite; 
 }
 
 @keyframes success {
