@@ -16,7 +16,8 @@
     "mobx": "^6.1.8",
     "mobx-react-lite": "^3.2.0",
     "normalize.css": "^8.0.1",
-    "preact": "^10.5.12",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "styled": "^1.0.0"
@@ -36,9 +37,5 @@
     "@parcel/transformer-posthtml": "^2.0.0-nightly.617",
     "parcel": "^2.0.0-beta.1",
     "postcss": "^8.2.7"
-  },
-  "alias": {
-    "react": "preact/compat",
-    "react-dom": "preact/compat"
   }
 }
