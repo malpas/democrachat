@@ -65,6 +65,22 @@ input {
     color: #ff0011
 }
 
+.text-success {
+    animation: success 2s infinite;
+}
+
+@keyframes success {
+    0% {
+        color: #318731;
+    }
+    50% {
+        color: #3dd129;
+    }
+    100% {
+        color: #318731;
+    }
+}
+
 .text-center {
     text-align: center;
 }

@@ -17,7 +17,11 @@ const UserList = observer(({ usernames }) => {
 
     return (
         <div>
-            <UserActions username={selectedUsername} onClose={() => setSelectedUsername("")} onMute={muteUser} errors={state.userActions.userActionErrors} />
+            <UserActions
+                username={selectedUsername}
+                onClose={() => setSelectedUsername("")} onMute={muteUser}
+                errors={state.userActions.userActionErrors}
+                resultMessage={state.userActions.userActionResult} />
             <ul className="chat__userlist">
                 {usernames.map(username => <li className="chat__userlist__item" onClick={() => setSelectedUsername(username)} key={username}>{username}</li>)}
             </ul>

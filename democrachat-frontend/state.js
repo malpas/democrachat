@@ -144,6 +144,7 @@ class AuthStore {
 
 class UserActionStore {
     userActionErrors = []
+    userActionResult = ""
 
     constructor(root) {
         this.root = root
@@ -170,8 +171,14 @@ class UserActionStore {
                     }
                 })
             })
-            .then(() => {
+            .then(resp => {
+                this.userActionResult = resp.data
                 this.root.auth.fetchUserInfo()
+                setTimeout(() => {
+                    runInAction(() => {
+                        this.userActionResult = ""
+                    })
+                }, 2000)
             })
     }
 }

@@ -25,7 +25,7 @@ namespace Democrachat.Chat
             {
                 MuteService.MuteRequestResult.INVALID_USERNAME => BadRequest($"Invalid username {request.Username}"),
                 MuteService.MuteRequestResult.NOT_ENOUGH_SILVER => BadRequest("Not enough silver"),
-                _ => Ok()
+                _ => Ok($"You muted {request.Username} for {request.Silver * 5} seconds")
             };
         }
     }
