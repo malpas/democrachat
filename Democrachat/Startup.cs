@@ -4,6 +4,7 @@ using Democrachat.Chat;
 using Democrachat.Db;
 using Democrachat.Log;
 using Democrachat.Power;
+using Democrachat.Rewards;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,6 +47,8 @@ namespace Democrachat
             services.AddSingleton<RegisterSpamCheckService>();
             services.AddSingleton<ActiveUserService>();
 
+            services.AddSingleton<RewardService>();
+
             services.AddControllers();
             services.AddSignalR();
             services.AddSwaggerGen(c =>
@@ -58,7 +61,8 @@ namespace Democrachat
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
-            
+            app.ApplicationServices.GetService<RewardService>(); // Warm up reward service for its timer event
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
