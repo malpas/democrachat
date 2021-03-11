@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json.Serialization;
 using Castle.Core.Internal;
 
@@ -13,6 +14,8 @@ namespace Democrachat.Auth.Models
         
         [JsonIgnore]
         public string Hash { get; init; }
+        
+        public DateTime MutedUntil { get; set; }
 
         public int Gold { get; set; }
         public int Silver { get; set; }

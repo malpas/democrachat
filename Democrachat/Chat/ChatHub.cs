@@ -30,6 +30,13 @@ namespace Democrachat.Chat
             if (!_topicNameService.IsValidTopic(topic))
                 return;
             var userId = int.Parse(Context.User.FindFirstValue("Id"));
+            var userData = _authService.GetUserById(userId);
+            if (DateTime.Now <= userData.MutedUntil)
+            {
+                Clients.Caller.SendAsync("ReceiveMessage", topic, "cc",
+                    $"You're muted until {userData.MutedUntil}.");
+                return;
+            }
             Clients.Group(topic).SendAsync("ReceiveMessage", topic, _authService.GetUserById(userId).Username, message);
             _activeUserService.AddUserToTopic(topic, userId);
         }
@@ -41,11 +48,6 @@ namespace Democrachat.Chat
             var userId = int.Parse(Context.User.FindFirstValue("Id"));
             _activeUserService.AddUserToTopic(topic, userId);
             Groups.AddToGroupAsync(Context.ConnectionId, topic);
-        }
-
-        public override Task OnConnectedAsync()
-        {
-            return base.OnConnectedAsync();
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)

@@ -26,6 +26,7 @@
 .chat__users {
     grid-area: users;
     padding-left: 1em;
+    padding-right: 1em;
 }
 
 .chat__userlist {
@@ -48,6 +49,7 @@
         grid-template-areas: 
             "messages users"
             "send .";
+        grid-template-columns: 4fr 1fr;
         grid-template-rows: auto 3em;
     }
 

@@ -1,6 +1,7 @@
 .logo {
     display: inline;
     margin: 0;
+    margin-right: 1em;
     -moz-user-select: none;
     -webkit-user-select: none;
     pointer-events: none;

@@ -7,6 +7,7 @@ class RootStore {
     constructor() {
         this.auth = new AuthStore(this)
         this.chat = new ChatStore(this)
+        this.userActions = new UserActionStore(this)
     }
 }
 
@@ -138,6 +139,40 @@ class AuthStore {
                 return Promise.reject()
             })
             .then(() => this.fetchUserInfo())
+    }
+}
+
+class UserActionStore {
+    userActionErrors = []
+
+    constructor(root) {
+        this.root = root
+        makeAutoObservable(this)
+    }
+
+    muteUser(username, silver) {
+        runInAction(() => {
+            this.userActionErrors = []
+        })
+        if (!silver) {
+            runInAction(() => {
+                this.userActionErrors = ["Need amount of silver to mute"]
+            })
+            return
+        }
+        return axios.post("/api/mute", { username, silver }, { withCredentials: true })
+            .catch(err => {
+                runInAction(() => {
+                    if (err.response.data.errors) {
+                        this.userActionErrors = Object.values(err.response.data.errors)
+                    } else {
+                        this.userActionErrors = [err.response.data]
+                    }
+                })
+            })
+            .then(() => {
+                this.root.auth.fetchUserInfo()
+            })
     }
 }
 

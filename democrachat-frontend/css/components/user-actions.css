@@ -1,0 +1,30 @@
+.user-actions {
+    display: grid;
+    max-width: 100%;
+    background-color: #fff;
+    padding: 1em;
+    grid-template-areas: 
+        "header"
+        "errors"
+        "mute";
+}
+
+.user-actions__header {
+    grid-area: header;
+    display: grid;
+    grid-template-columns: 1fr 1em;
+}
+
+.user-actions__header > * {
+    margin: 0;
+}
+
+.user-actions__errors {
+    grid-area: errors;
+}
+
+.user-actions__mute {
+    grid-area: mute;
+    display: grid;
+    grid-template-columns: 1fr auto;
+}

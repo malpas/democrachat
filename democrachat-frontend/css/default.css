@@ -10,6 +10,8 @@
 @import "./components/modal.css";
 @import "./components/chat.css";
 @import "./components/navbar.css";
+@import "./components/hamburger.css";
+@import "./components/user-actions.css";
 
 body {
     background-color: #ffffff;
