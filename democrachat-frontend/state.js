@@ -41,6 +41,10 @@ class ChatStore {
             runInAction(() => {
                 this.messages = [...this.messages, { topic, username, text }]
             })
+            var chat = document.querySelector("#chat")
+            if (chat) {
+                chat.scrollTop = chat.scrollHeight
+            }
         })
 
     }
