@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Democrachat.Auth;
 using Democrachat.Chat;
 using Democrachat.Db;
+using Democrachat.Log;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace Democrachat
             
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<MuteService>();
+            services.AddScoped<ILogger, Logger>();
             services.AddSingleton<IAuthService, DbAuthService>();
             services.AddScoped<ITopicNameService, DbTopicNameService>();
             services.AddSingleton<RegisterSpamCheckService>();

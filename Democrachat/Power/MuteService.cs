@@ -1,15 +1,18 @@
 using System;
 using Democrachat.Db;
+using Democrachat.Log;
 
 namespace Democrachat.Chat
 {
     public class MuteService
     {
         private IUserService _userService;
+        private ILogger _logger;
 
-        public MuteService(IUserService userService)
+        public MuteService(IUserService userService, ILogger logger)
         {
             _userService = userService;
+            _logger = logger;
         }
         
         public MuteRequestResult TryAddMuteTime(string username, int silver, int callerId)
@@ -26,6 +29,7 @@ namespace Democrachat.Chat
             }
             _userService.AddMuteTime(targetData.Id, TimeSpan.FromSeconds(silver * 5));
             _userService.SubtractSilver(callerId, silver);
+            _logger.WriteLog($"mute from={callerData.Username} to={callerData.Username} silver={silver}");
             return MuteRequestResult.OK;
         }
 

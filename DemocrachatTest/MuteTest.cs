@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Democrachat.Auth.Models;
 using Democrachat.Chat;
 using Democrachat.Db;
+using Democrachat.Log;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using Xunit;
@@ -15,7 +16,7 @@ namespace DemocrachatTest
         public void MuteAddsMuteTime()
         {
             var mockUserService = new Mock<IUserService>();
-            var muteService = new MuteService(mockUserService.Object);
+            var muteService = new MuteService(mockUserService.Object, new Mock<ILogger>().Object);
             var controller = new MuteController(muteService);
 
             mockUserService.Setup(s => s.GetDataById(1))
@@ -36,7 +37,7 @@ namespace DemocrachatTest
         public void CanOnlyMuteValidTargets()
         {
             var mockUserService = new Mock<IUserService>();
-            var muteService = new MuteService(mockUserService.Object);
+            var muteService = new MuteService(mockUserService.Object, new Mock<ILogger>().Object);
             var controller = new MuteController(muteService);
             
             var claims = new Claim[] { new("Id", "1") };
@@ -53,7 +54,7 @@ namespace DemocrachatTest
         public void RequiresEnoughSilver()
         {
             var mockUserService = new Mock<IUserService>();
-            var muteService = new MuteService(mockUserService.Object);
+            var muteService = new MuteService(mockUserService.Object, new Mock<ILogger>().Object);
             var controller = new MuteController(muteService);
 
             mockUserService.Setup(s => s.GetDataById(1))
@@ -75,7 +76,7 @@ namespace DemocrachatTest
         public void TakesSilverWhenSuccessful()
         {
             var mockUserService = new Mock<IUserService>();
-            var muteService = new MuteService(mockUserService.Object);
+            var muteService = new MuteService(mockUserService.Object, new Mock<ILogger>().Object);
             var controller = new MuteController(muteService);
 
             mockUserService.Setup(s => s.GetDataById(1))
@@ -96,7 +97,7 @@ namespace DemocrachatTest
         public void DoesNotTakeSilverWhenUnsuccessful()
         {
             var mockUserService = new Mock<IUserService>();
-            var muteService = new MuteService(mockUserService.Object);
+            var muteService = new MuteService(mockUserService.Object, new Mock<ILogger>().Object);
             var controller = new MuteController(muteService);
 
             mockUserService.Setup(s => s.GetDataById(1))

@@ -17,7 +17,9 @@ const Topics = observer(() => {
     }
 
     return <div class="container">
+        <h2>Topics</h2>
         {state.chat.topics.map(topic => <button class="button" key={topic} onClick={() => joinTopic(topic)}>{topic}</button>)}
+        <p><a href="/api/log">View the Castle Transparency Log ™</a></p>
     </div>
 })
 
