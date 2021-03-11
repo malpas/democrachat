@@ -34,7 +34,7 @@ namespace Democrachat.Chat
             if (DateTime.Now <= userData.MutedUntil)
             {
                 Clients.Caller.SendAsync("ReceiveMessage", topic, "cc",
-                    $"You're muted until {userData.MutedUntil}.");
+                    $"You're muted. Wait {(userData.MutedUntil - DateTime.Now).Seconds + 1} seconds.");
                 return;
             }
             Clients.Group(topic).SendAsync("ReceiveMessage", topic, _authService.GetUserById(userId).Username, message);
