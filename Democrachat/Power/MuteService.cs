@@ -2,7 +2,7 @@ using System;
 using Democrachat.Db;
 using Democrachat.Log;
 
-namespace Democrachat.Chat
+namespace Democrachat.Power
 {
     public class MuteService
     {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Democrachat;
 using Democrachat.Auth;
 using Democrachat.Auth.Models;
+using Democrachat.Db.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;

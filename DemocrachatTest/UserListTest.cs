@@ -4,6 +4,7 @@ using System.Threading;
 using Democrachat.Auth;
 using Democrachat.Auth.Models;
 using Democrachat.Chat;
+using Democrachat.Db.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Moq;

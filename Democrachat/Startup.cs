@@ -3,6 +3,7 @@ using Democrachat.Auth;
 using Democrachat.Chat;
 using Democrachat.Db;
 using Democrachat.Log;
+using Democrachat.Power;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

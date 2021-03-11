@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Democrachat.Chat
+namespace Democrachat.Power
 {
     public record MuteRequest
     {

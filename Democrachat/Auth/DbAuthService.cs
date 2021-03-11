@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Democrachat.Auth.Models;
+using Democrachat.Db.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;

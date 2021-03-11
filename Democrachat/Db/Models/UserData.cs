@@ -2,7 +2,7 @@ using System;
 using System.Text.Json.Serialization;
 using Castle.Core.Internal;
 
-namespace Democrachat.Auth.Models
+namespace Democrachat.Db.Models
 {
     public record UserData
     {

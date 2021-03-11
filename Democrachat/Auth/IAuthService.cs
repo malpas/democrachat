@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Democrachat.Auth.Models;
+using Democrachat.Db.Models;
 
 namespace Democrachat.Auth
 {
