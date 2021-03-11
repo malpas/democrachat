@@ -29,6 +29,10 @@ input {
 
 /* HELPERS */
 
+.pointer {
+    cursor: pointer;
+}
+
 .m-3 {
     margin: 1em;
 }

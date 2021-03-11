@@ -1,3 +1,6 @@
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useNavigate } from "@reach/router"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import GlobalContext from "../state"
@@ -8,6 +11,7 @@ const Chat = observer(({ topic }) => {
     const [message, setMessage] = useState("")
     const [activeUsers, setActiveUsers] = useState([])
     const state = useContext(GlobalContext)
+    const navigate = useNavigate()
 
     const [isFinaliseOpen, setIsFinaliseOpen] = useState()
 
@@ -43,7 +47,10 @@ const Chat = observer(({ topic }) => {
                 onSubmit={finaliseUser}
                 errors={state.auth.finaliseErrors} />
             <div className="chat__messages">
-                <h2>@{topic}</h2>
+                <div className="chat__messages__header">
+                    <FontAwesomeIcon icon={faChevronLeft} size="lg" className="pointer" onClick={() => navigate("/topics")} />
+                    <h2>@{topic}</h2>
+                </div>
                 <div className="chat__messages__list">
                     {state.chat.messages.filter(message => message.topic === topic).map(message =>
                         <p className="chat__messages__message"><strong>{message.username}</strong> {message.text}</p>
