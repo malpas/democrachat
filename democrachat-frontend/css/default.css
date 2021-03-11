@@ -21,6 +21,7 @@ body {
     font-family: 'Lato', sans-serif;
     font-size: 21px;
     height: 100%;
+    margin-bottom: 1em;
 }
 
 input {
