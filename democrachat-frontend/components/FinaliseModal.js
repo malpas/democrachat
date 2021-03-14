@@ -29,7 +29,7 @@ const FinaliseModal = ({ isOpen, onClose, onSubmit, errors }) => {
                     <input className="form__control" required type="text" value={username} onChange={ev => setUsername(ev.target.value)}></input>
                     <p className="form__label"><label>Password</label></p>
                     <input className="form__control" required type="password" value={password} onChange={ev => setPassword(ev.target.value)}></input>
-                    <input className="form__submit" type="submit" value="Finalise"></input>
+                    <input className="button" type="submit" value="Finalise"></input>
                 </form>
             </div>
         </div>
