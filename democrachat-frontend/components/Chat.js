@@ -4,6 +4,7 @@ import { useNavigate } from "@reach/router"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import GlobalContext from "../state"
+import Authorized from "./Authorized"
 import FinaliseModal from "./FinaliseModal"
 import UserList from "./UserList"
 
@@ -46,36 +47,38 @@ const Chat = observer(({ topic }) => {
     }
 
     return (
-        <div className="container chat">
-            <FinaliseModal isOpen={isFinaliseOpen}
-                onClose={() => setIsFinaliseOpen(false)}
-                onSubmit={finaliseUser}
-                errors={state.auth.finaliseErrors} />
-            <div className="chat__messages">
-                <div className="chat__messages__header">
-                    <FontAwesomeIcon icon={faChevronLeft} size="lg" className="pointer" onClick={() => navigate("/topics")} />
-                    <h2>@{topic}</h2>
+        <Authorized>
+            <div className="container chat">
+                <FinaliseModal isOpen={isFinaliseOpen}
+                    onClose={() => setIsFinaliseOpen(false)}
+                    onSubmit={finaliseUser}
+                    errors={state.auth.finaliseErrors} />
+                <div className="chat__messages">
+                    <div className="chat__messages__header">
+                        <FontAwesomeIcon icon={faChevronLeft} size="lg" className="pointer" onClick={() => navigate("/topics")} />
+                        <h2>@{topic}</h2>
+                    </div>
+                    <div className="chat__messages__list" id="chat">
+                        {state.chat.messages.filter(message => message.topic === topic).map(message =>
+                            <p className="chat__messages__message"><strong>{message.username}</strong> {message.text}</p>
+                        )}
+                    </div>
                 </div>
-                <div className="chat__messages__list" id="chat">
-                    {state.chat.messages.filter(message => message.topic === topic).map(message =>
-                        <p className="chat__messages__message"><strong>{message.username}</strong> {message.text}</p>
-                    )}
+                <div class="chat__send">
+                    <form onSubmit={onSend} class="form form--inline">
+                        <input type="text" value={message} onChange={ev => { setMessage(ev.target.value) }}></input>
+                        <input type="submit" class="button" value="Send"></input>
+                    </form>
+                </div>
+                <div class="chat__users">
+                    <h2>Users</h2>
+                    <UserList usernames={activeUsers} />
+                    {state.auth.isGuest ? (
+                        <strong class="action" onClick={() => setIsFinaliseOpen(true)}>Finalise your account</strong>
+                    ) : null}
                 </div>
             </div>
-            <div class="chat__send">
-                <form onSubmit={onSend} class="form form--inline">
-                    <input type="text" value={message} onChange={ev => { setMessage(ev.target.value) }}></input>
-                    <input type="submit" class="button" value="Send"></input>
-                </form>
-            </div>
-            <div class="chat__users">
-                <h2>Users</h2>
-                <UserList usernames={activeUsers} />
-                {state.auth.isGuest ? (
-                    <strong class="action" onClick={() => setIsFinaliseOpen(true)}>Finalise your account</strong>
-                ) : null}
-            </div>
-        </div>
+        </Authorized>
     )
 })
 
