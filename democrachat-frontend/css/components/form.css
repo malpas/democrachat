@@ -9,21 +9,6 @@
     margin-bottom: 0.25em;
 }
 
-.form__submit {
-    display: block;
-    margin-top: 0.5em;
-    background-color: #5500ff;
-    color: #f9f9f9;
-    border: none;
-    border-radius: 0.25em;
-    padding: 0.5em;
-    width: 100%;
-    cursor: pointer;
-}
-.form__submit:hover {
-    background-color: #6f27ff;
-}
-
 .form__control {
     width: 100%;
     display: block;

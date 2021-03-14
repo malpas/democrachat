@@ -1,28 +1,39 @@
 .topics {
     display: grid;
     grid-template-areas: 
+        "header"
         "list"
         "bid"
         "log";
     grid-template-columns: 1fr auto;
-    gap: 2em;
+    background: #fff;
+    border-radius: 0.5em;
+    padding: 1em;
+}
+
+.topics__header {
+    grid-area: header;
 }
 
 .topics__list {
     grid-area: list;
+    margin-bottom: 2em;;
 }
 
 .topics__bid {
     grid-area: bid;
+    padding: 1em 0;
 }
 
 .topics__log {
     grid-area: log;
+    padding: 1em;
 }
 
 @media (min-width: 700px) {
     .topics {
         grid-template-areas: 
+            "header header"
             "list list"
             "bid log";
         grid-template-columns: 1fr 1fr;

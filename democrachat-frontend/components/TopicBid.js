@@ -20,7 +20,7 @@ function TopicBid({ onBid, errors, result }) {
             <input type="text" className="form__control" placeholder="e.g. architecture" value={name} onChange={ev => setName(ev.target.value)} />
             <p className="form__label">Silver</p>
             <input type="number" className="form__control" value={silver} onChange={ev => setSilver(ev.target.value)} />
-            <input type="submit" className="form__submit button--secondary" value="Bid"></input>
+            <input type="submit" className="button button--secondary" value="Bid"></input>
         </form>
     )
 }

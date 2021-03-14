@@ -1,15 +1,23 @@
 .button {
     display: block;
+    box-sizing: border-box;
     margin-top: 0.5em;
+    height: 2.5em;
     background-color: #5500ff;
     color: #f9f9f9;
-    border: none;
     border-radius: 0.25em;
     padding: 0.5em;
     cursor: pointer;
+    border: none;
+    border-bottom: 0.2em solid #5cba74;
 }
 .button:hover {
-    background-color: #6f27ff;
+    background-color: #6611ff;
+}
+.button:active {
+    position: relative;
+    top: 0.2em;
+    border: none;
 }
 .button:disabled {
     background-color: #777;
@@ -26,6 +34,7 @@
 
 .button--secondary {
     background-color: #b66b6b;
+    border-bottom-color: #e2abd0;
 }
 .button--secondary:hover {
     background-color: #c57e7e;
