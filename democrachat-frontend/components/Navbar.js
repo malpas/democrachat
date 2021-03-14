@@ -18,17 +18,18 @@ const Navbar = observer(() => {
             .then(() => navigate("/"))
     }
 
-    return state.auth.username ?
+    return (
         <div className="container navbar">
             <div className="navbar__left">
                 <img src={logo} className="logo" />
             </div>
-            <div className="navbar__right">
-                <div>{state.auth.gold}G {state.auth.silver}S</div>
-                <div style={{ fontWeight: "bold", cursor: "pointer", marginLeft: "1em" }} class="button button--small" onClick={logout}>Logout</div>
-            </div>
+            {state.auth.username ?
+                <div className="navbar__right">
+                    <div>{state.auth.gold}G {state.auth.silver}S</div>
+                    <div style={{ fontWeight: "bold", cursor: "pointer", marginLeft: "1em" }} class="button button--small" onClick={logout}>Logout</div>
+                </div> : null}
         </div>
-        : null
+    )
 })
 
 export default Navbar

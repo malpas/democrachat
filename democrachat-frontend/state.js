@@ -42,6 +42,7 @@ class ChatStore {
     }
 
     _setupConnection(connection) {
+        window.apiMessages = () => this.messages
         connection.on("ReceiveMessage", (topic, username, text) => {
             runInAction(() => {
                 this.messages = [...this.messages, { topic, username, text }]
@@ -121,6 +122,7 @@ class AuthStore {
         this.errorText = ""
 
         return axios.post("/api/auth/logout", null, { withCredentials: true }).then(() => {
+            this.username = null
             this.root.chat.disconnect()
         })
     }

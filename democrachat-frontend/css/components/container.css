@@ -6,3 +6,9 @@
     box-sizing: border-box;
     padding: 0 1em;
 }
+
+.container--white {
+    background: #fff;
+    padding: 1em;
+    border-radius: 0.25em;
+}

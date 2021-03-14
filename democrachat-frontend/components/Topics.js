@@ -1,4 +1,4 @@
-import { useNavigate } from "@reach/router"
+import { Link, useNavigate } from "@reach/router"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect } from "react"
 import GlobalContext from "../state"
@@ -40,7 +40,8 @@ const Topics = observer(() => {
                         </div>
                     </div> : null}
                 <div className="topics__log">
-                    <a href="/api/log">View the Transparency Log</a>
+                    <p className="mt-0"><a href="/api/log">View the Transparency Log</a></p>
+                    <p><Link to="/faq">Frequently Asked Questions</Link></p>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@ import "../node_modules/normalize.css/normalize.css"
 import "../css/default.css"
 import { observer } from "mobx-react-lite";
 import GlobalContext from "../state";
-import { useNavigate } from "@reach/router";
+import { Link, useNavigate } from "@reach/router";
 import logo from "url:../img/logo-light.svg"
 
 const Home = observer(() => {
@@ -41,6 +41,7 @@ const Home = observer(() => {
                             onClickRegister={register}
                             errorText={state.auth.errorText} />
                     </div>
+                    <Link to="/faq" className="mt-1">FAQ</Link>
                 </div >
             </div>
         </div>

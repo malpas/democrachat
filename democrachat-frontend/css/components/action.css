@@ -1,8 +1,9 @@
 .action {
-    display: block;
+    display: inline-block;
     font-weight: bold;
     user-select: none;
     cursor: pointer;
+    text-decoration: none;
     color: #4aa1aa;
 }
 .action:hover {

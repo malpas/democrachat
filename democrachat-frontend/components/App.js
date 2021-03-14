@@ -7,6 +7,7 @@ import Chat from './Chat'
 import Navbar from './Navbar'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify'
+import Faq from './Faq'
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
             </Router>
             <Router>
                 <Home path="/" />
+                <Faq path="/faq" />
                 <Topics path="/topics" />
                 <Chat path="/chat/:topic" />
             </Router>
