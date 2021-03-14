@@ -27,6 +27,11 @@ const UserActions = observer(({ username, onClose }) => {
     }
     useEffect(() => updateVideo())
 
+    const videoChatButton = state.peer.currentCall
+        ? <button className="button button--100w" onClick={() => state.peer.endCall()}>End Chat</button>
+        : <button className="button button--100w" disabled={!state.peer.isConnected} onClick={() => callUser()}>Video Chat</button>
+
+
     if (!username) return null
 
     return <div class="user-actions">
@@ -50,10 +55,7 @@ const UserActions = observer(({ username, onClose }) => {
             </form>
         </div>
         <div className="user-actions__chat">
-            {state.peer.currentCall
-                ? <button className="button button--100w" onClick={() => state.peer.endCall()}>End Chat</button>
-                : <button className="button button--100w" disabled={!state.peer.isConnected} onClick={() => callUser()}>Video Chat</button>
-            }
+            {username != state.auth.username ? videoChatButton : null}
         </div>
     </div>
 })
