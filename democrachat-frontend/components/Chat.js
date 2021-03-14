@@ -43,6 +43,7 @@ const Chat = observer(({ topic }) => {
         state.auth.finalise(username, password).then(() => {
             setIsFinaliseOpen(false)
             state.peer.connectPeer()
+            state.userActions.setSelectedUsername(null)
         })
     }
 
