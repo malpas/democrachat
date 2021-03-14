@@ -4,6 +4,9 @@ import { makeAutoObservable, runInAction } from "mobx"
 import Peer from "peerjs"
 import { createContext, useContext } from "react"
 
+import React from "react"
+import { toast } from "react-toastify"
+
 class RootStore {
     constructor() {
         this.auth = new AuthStore(this)
@@ -246,19 +249,31 @@ class PeerStore {
         this.peer.on('call', call => {
             axios.get(`/api/peer/${call.peer}`, { withCredentials: true })
                 .then(resp => {
-                    var username = resp.data.username
-                    if (!confirm(`Answer call from ${username}?`)) {
-                        return
+                    const username = resp.data.username
+
+                    const acceptCall = (closeToast) => {
+                        this.root.userActions.setSelectedUsername(username)
+                        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                            .then(stream => {
+                                this.localStream = stream
+                                call.on("stream", stream => this.remoteStream = stream)
+                                call.on("close", () => this.currentCall = null)
+                                call.answer(stream)
+                                this.currentCall = call
+                            })
+                        closeToast()
                     }
-                    this.root.userActions.setSelectedUsername(username)
-                    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-                        .then(stream => {
-                            this.localStream = stream
-                            call.on("stream", stream => this.remoteStream = stream)
-                            call.on("close", () => this.currentCall = null)
-                            call.answer(stream)
-                            this.currentCall = call
-                        })
+                    const declineCall = (closeToast) => {
+                        call.close()
+                        closeToast()
+                    }
+                    toast(({ closeToast }) => <div>
+                        <p>{username} wants to video chat.</p>
+                        <p>
+                            <button onClick={() => declineCall(closeToast)} className="button d-i">Decline</button>&nbsp;
+                            <button onClick={() => acceptCall(closeToast)} className="button d-i">Accept</button>
+                        </p>
+                    </div>)
                 })
         })
         this.peer.on('stream', stream => this.remoteStream = stream)
@@ -266,14 +281,17 @@ class PeerStore {
 
     call(username) {
         if (!navigator.mediaDevices) {
-            alert("No media devices")
+            toast("No media devices")
             return
         }
+        var hasMediaDevice = false
         navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-            .catch(err => {
-                alert("Could not get stream")
+            .catch(_ => {
+                toast("You'd need a camera and mic")
+                return Promise.reject()
             })
             .then(stream => {
+                hasMediaDevice = true
                 this.localStream = stream
                 return Promise.resolve()
             })
@@ -288,14 +306,18 @@ class PeerStore {
                 this.currentCall = call
             })
             .catch(_ => {
-                alert("Could not get data")
+                if (!hasMediaDevice)
+                    return
+                toast("Could not get data")
             })
     }
 
     endCall() {
         if (!this.currentCall) return
-        this.localStream.getTracks().forEach(track => track.stop())
-        this.remoteStream.getTracks().forEach(track => track.stop())
+        if (this.localStream)
+            this.localStream.getTracks().forEach(track => track.stop())
+        if (this.remoteStream)
+            this.remoteStream.getTracks().forEach(track => track.stop())
         this.currentCall.close()
         this.currentCall = null
     }

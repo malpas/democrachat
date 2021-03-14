@@ -29,6 +29,11 @@ input {
     box-sizing: border-box;
 }
 
+.Toastify__toast {
+    color: black !important;
+    font-family: 'Lato', sans-serif !important;
+}
+
 /* HELPERS */
 
 .pointer {
@@ -61,6 +66,10 @@ input {
 
 .ml-3 {
     margin-left: 1em;
+}
+
+.d-i {
+    display: inline;
 }
 
 .text-white {

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Home from "./Home"
 import GlobalContext, { RootStore } from "../state"
 import { Router } from '@reach/router'
 import Topics from './Topics'
 import Chat from './Chat'
 import Navbar from './Navbar'
-import FinaliseModal from './FinaliseModal'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify'
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                 <Topics path="/topics" />
                 <Chat path="/chat/:topic" />
             </Router>
+            <ToastContainer closeOnClick={false} />
         </GlobalContext.Provider>
     )
 }
