@@ -57,7 +57,7 @@
         grid-template-areas: 
             "messages users"
             "send .";
-        grid-template-columns: 4fr 1fr;
+        grid-template-columns: 2fr 1fr;
         grid-template-rows: auto 3em;
     }
 
