@@ -239,7 +239,7 @@ class PeerStore {
     }
 
     connectPeer() {
-        if (this.peer) return
+        if (this.peer) this.peer.disconnect()
 
         this.peer = new Peer(null, { host: window.location.hostname, port: 9000 })
         this.peer.on('open', id => {

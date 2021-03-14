@@ -20,7 +20,7 @@ function App() {
                 <Topics path="/topics" />
                 <Chat path="/chat/:topic" />
             </Router>
-            <ToastContainer closeOnClick={false} />
+            <ToastContainer closeOnClick={false} autoClose={40000} />
         </GlobalContext.Provider>
     )
 }
