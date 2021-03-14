@@ -1,0 +1,30 @@
+services:
+  frontend:
+    build: ./democrachat-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+  backend:
+    build: ./Democrachat
+    environment:
+      CUSTOMCONNSTR_Default: "Host=postgres;Database=democrachat;Username=postgres;Password=CHANGETHIS;"
+    depends_on: 
+      - postgres
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: democrachat
+      POSTGRES_PASSWORD: CHANGETHIS
+    volumes:
+      - dcpg:/var/lib/postgres/data
+  peer:
+    image: peerjs/peerjs-server
+    ports:
+      - "9000:9000"
+    command: peerjs -p 9000 --path /
+  
+volumes:
+  dcpg:

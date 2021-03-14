@@ -71,11 +71,6 @@ namespace Democrachat
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Democrachat v1"));
             }
 
-            if (env.IsProduction())
-            {
-                app.UseHttpsRedirection();
-            }
-
             app.UseRouting();
 
             if (env.IsDevelopment())
