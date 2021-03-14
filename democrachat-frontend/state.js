@@ -1,13 +1,15 @@
 import { HttpTransportType, HubConnectionBuilder, HubConnectionState, LogLevel } from "@microsoft/signalr"
 import axios from "axios"
 import { makeAutoObservable, runInAction } from "mobx"
-import { createContext } from "react"
+import Peer from "peerjs"
+import { createContext, useContext } from "react"
 
 class RootStore {
     constructor() {
         this.auth = new AuthStore(this)
         this.chat = new ChatStore(this)
         this.userActions = new UserActionStore(this)
+        this.peer = new PeerStore(this)
     }
 }
 
@@ -151,6 +153,7 @@ class UserActionStore {
     bidResult = ""
     userActionErrors = []
     userActionResult = ""
+    selectedUsername
 
     constructor(root) {
         this.root = root
@@ -213,6 +216,88 @@ class UserActionStore {
                     }, 5000)
                 })
             })
+    }
+
+    setSelectedUsername(username) {
+        this.selectedUsername = username
+    }
+}
+
+class PeerStore {
+    peer
+    isConnected = false
+    currentCall
+    localStream
+    remoteStream
+
+    constructor(root) {
+        this.root = root
+        makeAutoObservable(this)
+    }
+
+    connectPeer() {
+        if (this.peer) return
+
+        this.peer = new Peer(null, { host: window.location.hostname, port: 9000 })
+        this.peer.on('open', id => {
+            axios.post(`/api/peer/${id}`, null, { withCredentials: true })
+            this.isConnected = true
+        })
+        this.peer.on('call', call => {
+            axios.get(`/api/peer/${call.peer}`, { withCredentials: true })
+                .then(resp => {
+                    var username = resp.data.username
+                    if (!confirm(`Answer call from ${username}?`)) {
+                        return
+                    }
+                    this.root.userActions.setSelectedUsername(username)
+                    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                        .then(stream => {
+                            this.localStream = stream
+                            call.on("stream", stream => this.remoteStream = stream)
+                            call.on("close", () => this.currentCall = null)
+                            call.answer(stream)
+                            this.currentCall = call
+                        })
+                })
+        })
+        this.peer.on('stream', stream => this.remoteStream = stream)
+    }
+
+    call(username) {
+        if (!navigator.mediaDevices) {
+            alert("No media devices")
+            return
+        }
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+            .catch(err => {
+                alert("Could not get stream")
+            })
+            .then(stream => {
+                this.localStream = stream
+                return Promise.resolve()
+            })
+            .then(() => axios.get(`/api/peer/user/${username}`, { withCredentials: true }))
+            .then(resp => {
+                const id = resp.data.id
+                var call = this.peer.call(id, this.localStream)
+                call.on("stream", remoteStream => {
+                    this.remoteStream = remoteStream
+                })
+                call.on("close", () => this.currentCall = null)
+                this.currentCall = call
+            })
+            .catch(_ => {
+                alert("Could not get data")
+            })
+    }
+
+    endCall() {
+        if (!this.currentCall) return
+        this.localStream.getTracks().forEach(track => track.stop())
+        this.remoteStream.getTracks().forEach(track => track.stop())
+        this.currentCall.close()
+        this.currentCall = null
     }
 }
 

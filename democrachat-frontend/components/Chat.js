@@ -20,6 +20,8 @@ const Chat = observer(({ topic }) => {
             .then(() => state.chat.joinTopic(topic))
             .then(() => state.chat.getActiveUsers(topic).then(users => setActiveUsers(users)))
 
+        state.peer.connectPeer()
+
         const handle = setInterval(() => {
             state.chat.getActiveUsers(topic).then(users => setActiveUsers(users))
         }, 3000)

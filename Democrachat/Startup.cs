@@ -37,7 +37,7 @@ namespace Democrachat
                     };
                 });
             
-            services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IUserService, UserService>();
             services.AddScoped<ITopicService, TopicService>();
             services.AddScoped<MuteService>();
             services.AddScoped<TopicBidService>();
@@ -48,6 +48,7 @@ namespace Democrachat
             services.AddSingleton<ActiveUserService>();
 
             services.AddSingleton<RewardService>();
+            services.AddSingleton<PeerService>();
 
             services.AddControllers();
             services.AddSignalR();

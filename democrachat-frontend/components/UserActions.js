@@ -1,35 +1,61 @@
-import React, { useState } from "react"
+import { observer } from "mobx-react-lite"
+import React, { useContext, useEffect, useState } from "react"
+import GlobalContext from "../state"
 
-function UserActions({ username, errors, resultMessage, onClose, onMute }) {
-    if (!username) return null
+const UserActions = observer(({ username, onClose }) => {
+    const state = useContext(GlobalContext)
+
+
+    const videoRef = React.createRef()
 
     const [silver, setSilver] = useState(0)
 
-    const submit = ev => {
+    const muteUser = ev => {
+        state.userActions.muteUser(username, silver)
         ev.preventDefault()
-        onMute(username, silver)
     }
+
+    const callUser = () => {
+        state.peer.call(username)
+    }
+
+    const updateVideo = () => {
+        if (videoRef.current && videoRef.current.srcObject != state.peer.remoteStream) {
+            videoRef.current.srcObject = state.peer.remoteStream
+            videoRef.current.play()
+        }
+    }
+    useEffect(() => updateVideo())
+
+    if (!username) return null
 
     return <div class="user-actions">
         <div class="user-actions__header">
             <h3>{username}</h3>
             <p onClick={onClose} className="pointer">X</p>
         </div>
+        {state.peer.currentCall ? <video ref={videoRef} style={{ maxWidth: "100%" }} /> : null}
         <div class="user-actions__errors">
-            {resultMessage ? <p className="text-success">{resultMessage}</p> : null}
-            {errors ?
+            {state.userActions.userActionResult ? <p className="text-success">{state.userActions.userActionResult}</p> : null}
+            {state.userActions.userActionErrors ?
                 <ul className="text-error">
-                    {errors.map(error => <li>{error}</li>)}
+                    {state.userActions.userActionErrors.map(error => <li>{error}</li>)}
                 </ul>
                 : null}
         </div>
         <div class="user-actions__mute">
-            <form className="form form--inline" onSubmit={submit}>
+            <form className="form form--inline" onSubmit={muteUser}>
                 <input type="number" placeholder="silver" onChange={ev => setSilver(ev.target.value)} value={silver} />
                 <input type="submit" className="form__submit" value="Mute" />
             </form>
         </div>
+        <div className="user-actions__chat">
+            {state.peer.currentCall
+                ? <button className="button button--100w" onClick={() => state.peer.endCall()}>End Chat</button>
+                : <button className="button button--100w" disabled={!state.peer.isConnected} onClick={() => callUser()}>Video Chat</button>
+            }
+        </div>
     </div>
-}
+})
 
 export default UserActions
