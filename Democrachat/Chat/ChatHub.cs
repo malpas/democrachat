@@ -50,6 +50,12 @@ namespace Democrachat.Chat
             Groups.AddToGroupAsync(Context.ConnectionId, topic);
         }
 
+        public void LeaveTopic(string topic)
+        {
+            var userId = int.Parse(Context.User.FindFirstValue("Id"));
+            _activeUserService.RemoveUserFromTopic(topic, userId);
+        }
+
         public override Task OnDisconnectedAsync(Exception? exception)
         {
             var userId = int.Parse(Context.User.FindFirstValue("Id"));

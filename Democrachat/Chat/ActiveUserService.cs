@@ -34,8 +34,13 @@ namespace Democrachat.Chat
         {
             foreach (var (topic, ids) in _topicUserIds)
             {
-                _topicUserIds[topic] = _topicUserIds[topic].Where(id => id != userId).ToHashSet();
+                RemoveUserFromTopic(topic, userId);
             }
+        }
+
+        public void RemoveUserFromTopic(string topic, int userId)
+        {
+            _topicUserIds[topic] = _topicUserIds[topic].Where(id => id != userId).ToHashSet();
         }
     }
 }

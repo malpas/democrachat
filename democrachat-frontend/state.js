@@ -78,7 +78,12 @@ class ChatStore {
     }
 
     joinTopic(name) {
+        if (this.connection?.state != HubConnectionState.Connected) return
         return this.connection.send("JoinTopic", name)
+    }
+    leaveTopic(name) {
+        if (this.connection?.state != HubConnectionState.Connected) return
+        return this.connection.send("LeaveTopic", name)
     }
 
     send(topic, message) {
