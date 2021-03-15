@@ -36,7 +36,12 @@ class ChatStore {
             .build();
 
         this._setupConnection(this.connection)
-        this.connection.onreconnected(() => this._setupConnection(this.connection))
+        this.connection.onreconnected(() => {
+            toast("Reconnected to chat")
+        })
+        this.connection.onclose(() => {
+            toast("Lost connection to chat")
+        })
 
         return this.connection.start()
     }
