@@ -102,6 +102,10 @@ class AuthStore {
     login(username, password) {
         return axios.post("/api/auth/login", { username, password }, { withCredentials: true })
             .catch(err => {
+                if (err.response.status == 500 || err.response.status == 502) {
+                    this.errorText = "Could not connect to server"
+                    return Promise.reject()
+                }
                 this.errorText = err.response.data
                 return Promise.reject(err)
             })
