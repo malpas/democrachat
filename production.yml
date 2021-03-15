@@ -1,12 +1,12 @@
 services:
   frontend:
-    build: ./democrachat-frontend
+    image: democrachat_frontend
     ports:
       - "8080:80"
     depends_on:
       - backend
   backend:
-    build: ./Democrachat
+    image: democrachat_backend
     environment:
       CUSTOMCONNSTR_Default: "Host=postgres;Database=democrachat;Username=postgres;Password=CHANGETHIS;"
     depends_on: 
@@ -23,9 +23,8 @@ services:
   peer:
     image: peerjs/peerjs-server
     ports:
-      - "9000:9000"
+      - "8081:9000" # Should be exposed behind reverse proxy on port 9000
     command: peerjs -p 9000 --path / --proxied
   
 volumes:
-  dcpg: 
-    external: true
+  dcpg:

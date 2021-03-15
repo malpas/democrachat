@@ -1,11 +1,11 @@
 FROM node AS build
 WORKDIR /build
-RUN npm install -D parcel@next
+RUN yarn add -D parcel@next
 COPY . .
-RUN npm install
-RUN npm run-script build 
+RUN yarn install
+RUN yarn run build 
 
-FROM nginx:stable
+FROM nginx:stable-alpine
 WORKDIR /app
 COPY --from=build /build/dist/prod .
 COPY nginx.conf /etc/nginx/conf.d/default.conf
