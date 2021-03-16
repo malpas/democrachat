@@ -40,7 +40,8 @@ class ChatStore {
             toast("Reconnected to chat")
         })
         this.connection.onclose(() => {
-            toast("Lost connection to chat")
+            if (this.root.auth.username)
+                toast("Lost connection to chat")
         })
 
         return this.connection.start()
