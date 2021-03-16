@@ -41,7 +41,7 @@ const Home = observer(() => {
                             onClickRegister={register}
                             errorText={state.auth.errorText} />
                     </div>
-                    <Link to="/faq" className="mt-1">FAQ</Link>
+                    <Link to="/faq" className="mt-1 home__faq">FAQ</Link>
                 </div >
             </div>
         </div>

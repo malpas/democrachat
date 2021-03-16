@@ -4,11 +4,11 @@
     user-select: none;
     cursor: pointer;
     text-decoration: none;
-    color: #4aa1aa;
+    color: #5500ff;
 }
 .action:hover {
-    color: #69c1ca;
+    color: #7722ff;
 }
 .action:active {
-    color: #528edc;
+    color: #3300dd;
 }

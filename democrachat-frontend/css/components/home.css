@@ -4,7 +4,8 @@
         grid-template-areas: 
             "header"
             "blurb"
-            "login";
+            "login"
+            "faq";
     padding: 1em;
 }
 
@@ -14,6 +15,11 @@
 
 .home__blurb {
     grid-area: blurb;
+}
+
+.home__faq {
+    grid-area: faq;
+    text-align: right;
 }
 
 .home__login {
@@ -28,7 +34,8 @@
     .home {
         grid-template-areas: 
             "header header"
-            "blurb login";
+            "blurb login"
+            ". faq";
         grid-template-columns: 3fr 2fr;
     }
 }
