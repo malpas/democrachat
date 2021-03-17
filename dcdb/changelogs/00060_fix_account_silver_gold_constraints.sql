@@ -1,0 +1,11 @@
+ALTER TABLE account
+ALTER silver SET DEFAULT 0;
+
+ALTER TABLE account
+ALTER silver SET NOT NULL;
+
+ALTER TABLE account
+ALTER gold SET DEFAULT 0;
+
+ALTER TABLE account
+ALTER gold SET NOT NULL;
