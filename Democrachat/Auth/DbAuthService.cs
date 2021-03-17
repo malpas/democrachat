@@ -20,13 +20,13 @@ namespace Democrachat.Auth
         public UserData? AttemptLogin(string username, string password)
         {
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
-            var hash = conn.QueryFirstOrDefault<string>("SELECT hash from account where username = @Username",
+            var hash = conn.QueryFirstOrDefault<string>("SELECT hash from account where lower(username) = lower(@Username)",
                 new {Username = username});
             if (hash != null && !BCrypt.Net.BCrypt.Verify(password, hash))
             {
                 return null;
             }
-            var userData = conn.QueryFirstOrDefault<UserData>("SELECT * from account where username = @Username",
+            var userData = conn.QueryFirstOrDefault<UserData>("SELECT * from account where lower(username) = lower(@Username)",
                 new {Username = username});
             return userData;
         }
@@ -59,7 +59,7 @@ namespace Democrachat.Auth
         public bool IsUsernameTaken(string username)
         {
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
-            return conn.QueryFirst<bool>("SELECT EXISTS (SELECT * FROM account WHERE username = @Username)",
+            return conn.QueryFirst<bool>("SELECT EXISTS (SELECT * FROM account WHERE lower(username) = lower(@Username))",
                 new {Username = username});
         }
 
