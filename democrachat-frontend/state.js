@@ -157,11 +157,14 @@ class AuthStore {
     finalise(username, password) {
         return axios.post("/api/auth/finalize", { username, password }, { withCredentials: true })
             .catch(err => {
-                if (err.response.data.errors) {
-                    runInAction(() => {
-                        this.finaliseErrors = Object.values(err.response.data.errors)
-                    })
-                }
+                runInAction(() => {
+                    var data = err.response.data
+                    if (data.errors) {
+                        this.finaliseErrors = Object.values(data.errors)
+                        return
+                    }
+                    this.finaliseErrors = [data]
+                })
                 return Promise.reject()
             })
             .then(() => this.fetchUserInfo())
