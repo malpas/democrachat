@@ -8,11 +8,46 @@ import Authorized from "./Authorized"
 import FinaliseModal from "./FinaliseModal"
 import UserList from "./UserList"
 
-const Chat = observer(({ topic }) => {
+const ChatMessages = ({ topic, messages }) => (
+    <div className="chat__messages">
+        <div className="chat__messages__header">
+            <FontAwesomeIcon icon={faChevronLeft} size="lg" className="pointer" onClick={() => navigate("/topics")} />
+            <h2>@{topic}</h2>
+        </div>
+        <div className="chat__messages__list" id="chat">
+            {messages.filter(message => message.topic === topic).map(message =>
+                <p className="chat__messages__message"><strong>{message.username}</strong> {message.text}</p>
+            )}
+        </div>
+    </div>
+)
+
+const ChatSender = ({ onSend, onChange }) => {
     const [message, setMessage] = useState("")
+
+    const onLocalSubmit = ev => {
+        onSend(message)
+        setMessage("")
+        ev.preventDefault()
+    }
+    const onLocalChange = ev => {
+        setMessage(ev.target.value)
+        onChange()
+    }
+
+    return (
+        <div class="chat__send">
+            <form onSubmit={onLocalSubmit} class="form form--inline">
+                <input type="text" value={message} onChange={onLocalChange}></input>
+                <input type="submit" class="button" value="Send"></input>
+            </form>
+        </div>
+    )
+}
+
+const Chat = observer(({ topic }) => {
     const [activeUsers, setActiveUsers] = useState([])
     const state = useContext(GlobalContext)
-    const navigate = useNavigate()
 
     const [isFinaliseOpen, setIsFinaliseOpen] = useState()
 
@@ -35,14 +70,11 @@ const Chat = observer(({ topic }) => {
     }, [])
 
 
-    const onSend = ev => {
-        ev.preventDefault()
+    const onSend = message => {
         state.chat.send(topic, message)
-        setMessage("")
     }
 
-    const onChange = ev => {
-        setMessage(ev.target.value)
+    const onChange = () => {
         state.chat.indicateTyping(topic)
     }
 
@@ -61,23 +93,8 @@ const Chat = observer(({ topic }) => {
                     onClose={() => setIsFinaliseOpen(false)}
                     onSubmit={finaliseUser}
                     errors={state.auth.finaliseErrors} />
-                <div className="chat__messages">
-                    <div className="chat__messages__header">
-                        <FontAwesomeIcon icon={faChevronLeft} size="lg" className="pointer" onClick={() => navigate("/topics")} />
-                        <h2>@{topic}</h2>
-                    </div>
-                    <div className="chat__messages__list" id="chat">
-                        {state.chat.messages.filter(message => message.topic === topic).map(message =>
-                            <p className="chat__messages__message"><strong>{message.username}</strong> {message.text}</p>
-                        )}
-                    </div>
-                </div>
-                <div class="chat__send">
-                    <form onSubmit={onSend} class="form form--inline">
-                        <input type="text" value={message} onChange={onChange}></input>
-                        <input type="submit" class="button" value="Send"></input>
-                    </form>
-                </div>
+                <ChatMessages topic={topic} messages={state.chat.messages} />
+                <ChatSender onChange={onChange} onSend={onSend} />
                 <div class="chat__users">
                     <h2>Users</h2>
                     <UserList usernames={activeUsers} typingIndicators={state.chat.typingIndicators} />
@@ -86,7 +103,7 @@ const Chat = observer(({ topic }) => {
                     ) : null}
                 </div>
             </div>
-        </Authorized>
+        </Authorized >
     )
 })
 
