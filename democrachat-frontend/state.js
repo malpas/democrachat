@@ -37,13 +37,6 @@ class ChatStore {
             .build();
 
         this._setupConnection(this.connection)
-        this.connection.onreconnected(() => {
-            toast("Reconnected to chat")
-        })
-        this.connection.onclose(() => {
-            if (this.root.auth.username)
-                toast("Lost connection to chat")
-        })
 
         return this.connection.start()
     }
@@ -64,6 +57,14 @@ class ChatStore {
             setTimeout(() => {
                 this.typingIndicators = this.typingIndicators.filter(ti => Date.now() - ti.time < 800)
             }, 1000);
+        })
+
+        connection.onreconnected(() => {
+            toast("Reconnected to chat")
+        })
+        connection.onclose(() => {
+            if (this.root.auth.username)
+                toast("Lost connection to chat")
         })
     }
 
