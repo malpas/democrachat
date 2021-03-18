@@ -53,9 +53,13 @@ class ChatStore {
         })
 
         connection.on("UserTyping", (topic, username) => {
-            this.typingIndicators = [...this.typingIndicators, { topic, username, time: Date.now() }]
+            runInAction(() => {
+                this.typingIndicators = [...this.typingIndicators, { topic, username, time: Date.now() }]
+            })
             setTimeout(() => {
-                this.typingIndicators = this.typingIndicators.filter(ti => Date.now() - ti.time < 800)
+                runInAction(() => {
+                    this.typingIndicators = this.typingIndicators.filter(ti => Date.now() - ti.time < 800)
+                })
             }, 1000);
         })
 
