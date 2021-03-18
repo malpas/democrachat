@@ -17,7 +17,7 @@ function Login({ onSubmit, onClickRegister, errorText }) {
         <p class="form__label">Password</p>
         <input type="password" class="form__control" required onChange={ev => setPassword(ev.target.value)} value={password}></input>
         <input type="submit" class="button" value="Login"></input>
-        <span class="action mt-3 text-center" onClick={onClickRegister}>Instant sign-up</span>
+        <span class="action mt-3 text-center" onClick={onClickRegister}>1-click sign-up</span>
     </form>
 }
 
