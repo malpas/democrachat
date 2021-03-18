@@ -61,7 +61,7 @@ const Chat = observer(({ topic }) => {
         const handle = setInterval(() => {
             state.chat.getActiveUsers(topic).then(users => setActiveUsers(users))
             state.chat.joinTopic(topic)
-        }, 3000)
+        }, 1000)
 
         return () => {
             clearInterval(handle)
