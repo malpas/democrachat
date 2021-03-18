@@ -8,7 +8,7 @@ import Authorized from "./Authorized"
 import FinaliseModal from "./FinaliseModal"
 import UserList from "./UserList"
 
-const ChatMessages = ({ topic, messages }) => (
+const ChatMessages = ({ topic, messages, navigate }) => (
     <div className="chat__messages">
         <div className="chat__messages__header">
             <FontAwesomeIcon icon={faChevronLeft} size="lg" className="pointer" onClick={() => navigate("/topics")} />
@@ -48,8 +48,10 @@ const ChatSender = ({ onSend, onChange }) => {
 const Chat = observer(({ topic }) => {
     const [activeUsers, setActiveUsers] = useState([])
     const state = useContext(GlobalContext)
+    const navigate = useNavigate()
 
     const [isFinaliseOpen, setIsFinaliseOpen] = useState()
+
 
     useEffect(() => {
         state.chat.connect()
@@ -93,7 +95,7 @@ const Chat = observer(({ topic }) => {
                     onClose={() => setIsFinaliseOpen(false)}
                     onSubmit={finaliseUser}
                     errors={state.auth.finaliseErrors} />
-                <ChatMessages topic={topic} messages={state.chat.messages} />
+                <ChatMessages topic={topic} messages={state.chat.messages} navigate={navigate} />
                 <ChatSender onChange={onChange} onSend={onSend} />
                 <div class="chat__users">
                     <h2>Users</h2>
