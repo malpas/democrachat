@@ -87,5 +87,14 @@ namespace DemocrachatTest
             _mockClients.Verify(c => c.Group("abc").SendCoreAsync("ReceiveMessage", It.IsAny<object[]?>(), default),
                 Times.Never);
         }
+
+        [Fact]
+        public void TypingIndicatorSent()
+        {
+            _mockContext.Setup(c => c.User).Returns(johnPrincipal);
+            _hub.IndicateTyping("general");
+            _mockClients.Verify(c => c.Group("general").SendCoreAsync("UserTyping", new []{ "general", "john"}, default),
+                Times.Once);
+        }
     }
 }

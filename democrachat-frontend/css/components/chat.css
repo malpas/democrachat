@@ -46,6 +46,9 @@
     cursor: pointer;
     color: #6f27ff;
 }
+.chat__userlist__item--typing {
+    color: #2cb54e;
+}
 
 .chat__send {
     grid-area: send;

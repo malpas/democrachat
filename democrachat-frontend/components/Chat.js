@@ -41,6 +41,11 @@ const Chat = observer(({ topic }) => {
         setMessage("")
     }
 
+    const onChange = ev => {
+        setMessage(ev.target.value)
+        state.chat.indicateTyping(topic)
+    }
+
     const finaliseUser = (username, password) => {
         state.auth.finalise(username, password).then(() => {
             setIsFinaliseOpen(false)
@@ -69,13 +74,13 @@ const Chat = observer(({ topic }) => {
                 </div>
                 <div class="chat__send">
                     <form onSubmit={onSend} class="form form--inline">
-                        <input type="text" value={message} onChange={ev => { setMessage(ev.target.value) }}></input>
+                        <input type="text" value={message} onChange={onChange}></input>
                         <input type="submit" class="button" value="Send"></input>
                     </form>
                 </div>
                 <div class="chat__users">
                     <h2>Users</h2>
-                    <UserList usernames={activeUsers} />
+                    <UserList usernames={activeUsers} typingIndicators={state.chat.typingIndicators} />
                     {state.auth.isGuest ? (
                         <strong class="action" onClick={() => setIsFinaliseOpen(true)}>Finalise your account</strong>
                     ) : null}

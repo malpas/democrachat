@@ -20,6 +20,7 @@ class ChatStore {
     connection
     messages = []
     topics = []
+    typingIndicators = []
 
     constructor(root) {
         this.root = root
@@ -48,7 +49,6 @@ class ChatStore {
     }
 
     _setupConnection(connection) {
-        window.apiMessages = () => this.messages
         connection.on("ReceiveMessage", (topic, username, text) => {
             runInAction(() => {
                 this.messages = [...this.messages, { topic, username, text }]
@@ -59,6 +59,12 @@ class ChatStore {
             }
         })
 
+        connection.on("UserTyping", (topic, username) => {
+            this.typingIndicators = [...this.typingIndicators, { topic, username, time: Date.now() }]
+            setTimeout(() => {
+                this.typingIndicators = this.typingIndicators.filter(ti => Date.now() - ti.time < 800)
+            }, 1000);
+        })
     }
 
     disconnect() {
@@ -94,6 +100,10 @@ class ChatStore {
 
     send(topic, message) {
         this.connection.send("SendMessage", topic, message)
+    }
+
+    indicateTyping(topic) {
+        this.connection.send("IndicateTyping", topic)
     }
 }
 

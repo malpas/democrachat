@@ -1,9 +1,17 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import GlobalContext from "../state";
 import UserActions from "./UserActions"
 
-const UserList = observer(({ usernames }) => {
+const UserLi = ({ username, isTyping, onSelect }) => {
+    var className = "chat__userlist__item"
+    if (isTyping) {
+        className += " chat__userlist__item--typing"
+    }
+    return <li className={className} onClick={() => onSelect(username)}>{username}</li>
+}
+
+const UserList = observer(({ usernames, typingIndicators }) => {
     const state = useContext(GlobalContext)
 
     if (usernames.length == 0) {
@@ -19,7 +27,7 @@ const UserList = observer(({ usernames }) => {
                 onClose={() => setSelectedUsername("")}
                 callStream={state.peer.remoteStream} />
             <ul className="chat__userlist">
-                {usernames.map(username => <li className="chat__userlist__item" onClick={() => setSelectedUsername(username)} key={username}>{username}</li>)}
+                {usernames.map(username => <UserLi username={username} isTyping={typingIndicators.some(ti => ti.username === username)} onSelect={setSelectedUsername} />)}
             </ul>
         </div>
     )

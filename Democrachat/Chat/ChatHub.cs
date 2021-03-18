@@ -41,6 +41,12 @@ namespace Democrachat.Chat
             _activeUserService.AddUserToTopic(topic, userId);
         }
 
+        public void IndicateTyping(string topic)
+        {
+            var userId = int.Parse(Context.User.FindFirstValue("Id"));
+            Clients.Group(topic).SendAsync("UserTyping", topic, _authService.GetUserById(userId).Username);
+        }
+
         public void JoinTopic(string topic)
         {
             if (!_topicNameService.IsValidTopic(topic))
