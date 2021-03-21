@@ -1,16 +1,20 @@
 services:
   frontend:
-    build: ./democrachat-frontend
+    image: democrachat_frontend
     ports:
       - "8080:80"
     depends_on:
       - backend
   backend:
-    build: ./Democrachat
+    image: democrachat_backend
     environment:
       CUSTOMCONNSTR_Default: "Host=postgres;Database=democrachat;Username=postgres;Password=CHANGETHIS;"
     depends_on: 
       - postgres
+    volumes:
+      - type: bind
+        source: ~/log.txt
+        target: /app/log.txt
   postgres:
     image: postgres
     ports:
