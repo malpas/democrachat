@@ -82,7 +82,7 @@ namespace Democrachat.Auth
         public IEnumerable<UserData> GetOrderedUsersWithWealth()
         {
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
-            return conn.Query<UserData>("SELECT * FROM account WHERE gold > 0 OR silver > 0 ORDER BY gold DESC, silver DESC");
+            return conn.Query<UserData>("SELECT * FROM account WHERE gold > 0 OR silver > 0 ORDER BY username");
         }
     }
 }
