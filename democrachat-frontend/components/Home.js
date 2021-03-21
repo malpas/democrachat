@@ -31,10 +31,10 @@ const Home = observer(() => {
             <div class="vertical-center-wrap">
                 <div class="home">
                     <div class="home__header">
-                        <img src={logo} class="logo mb-2" alt="Democrachat" />
+                        <img src={logo} class="logo mb-3" alt="Democrachat" />
                     </div>
                     <div class="home__blurb text-white">
-                        <span class="dramatic-text">The chat platform for hip people.</span>
+                        <span class="dramatic-text">The chat platform for hip people</span>
                     </div>
                     <div class="home__login">
                         <Login onSubmit={(username, password) => login(username, password)}
