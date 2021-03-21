@@ -12,5 +12,6 @@ namespace Democrachat.Auth
         void FinalizeNewUser(int id, string username, string password);
         bool IsUsernameTaken(string username);
         IEnumerable<string> BatchGetUsernamesByIds(IEnumerable<int> id);
+        IEnumerable<UserData> GetOrderedUsersWithWealth();
     }
 }
