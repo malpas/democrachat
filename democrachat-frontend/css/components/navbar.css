@@ -6,6 +6,7 @@
     grid-template-columns: 1fr auto;
     align-items: flex-end;
     box-sizing: border-box;
+    margin-top: 0.5em;
 }
 
 .navbar__left {
