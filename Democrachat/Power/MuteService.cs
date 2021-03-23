@@ -29,7 +29,7 @@ namespace Democrachat.Power
             }
             _userService.AddMuteTime(targetData.Id, TimeSpan.FromSeconds(silver * 5));
             _userService.SubtractSilver(callerId, silver);
-            _logger.WriteLog($"mute from={callerData.Username} to={callerData.Username} silver={silver}");
+            _logger.WriteLog($"mute from={callerData.Username} to={targetData.Username} silver={silver}");
             return MuteRequestResult.OK;
         }
 

@@ -116,5 +116,27 @@ namespace DemocrachatTest
             mockUserService.Verify(s => s.SubtractSilver(1, 20),
                 Times.Never);
         }
+
+        [Fact]
+        public void MutingIsLogged()
+        {
+            var mockUserService = new Mock<IUserService>();
+            var mockLogger = new Mock<ILogger>();
+            var muteService = new MuteService(mockUserService.Object, mockLogger.Object);
+            var controller = new MuteController(muteService);
+
+            mockUserService.Setup(s => s.GetDataById(1))
+                .Returns(new UserData {Username = "caller", Id = 1, Silver = 20});
+            mockUserService.Setup(s => s.GetDataByUsername("john"))
+                .Returns(new UserData {Username = "john", Id = 2});
+
+            var claims = new Claim[] { new("Id", "1") };
+            controller.ControllerContext.HttpContext = new DefaultHttpContext
+                {User = new ClaimsPrincipal(new ClaimsIdentity(claims))};
+            
+            controller.Mute(new MuteRequest { Username = "john", Silver = 20});
+            mockLogger.Verify(l => l.WriteLog(It.Is<string>(s => s.Contains("john") && s.Contains("caller"))),
+                Times.Once);
+        }
     }
 }
