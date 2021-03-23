@@ -98,7 +98,7 @@ const Chat = observer(({ topic }) => {
                 <ChatMessages topic={topic} messages={state.chat.messages} navigate={navigate} />
                 <ChatSender onChange={onChange} onSend={onSend} />
                 <div class="chat__users">
-                    <h2>Users</h2>
+                    <h2 class="chat__users__header">Users</h2>
                     <UserList usernames={activeUsers} typingIndicators={state.chat.typingIndicators} />
                     {state.auth.isGuest ? (
                         <strong class="action" onClick={() => setIsFinaliseOpen(true)}>Finalise your account</strong>

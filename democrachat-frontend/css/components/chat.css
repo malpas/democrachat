@@ -31,8 +31,9 @@
 
 .chat__users {
     grid-area: users;
-    padding-left: 1em;
-    padding-right: 1em;
+}
+.chat__users__header {
+    margin-top: 0;
 }
 
 .chat__userlist {
@@ -66,5 +67,14 @@
 
     .chat__messages__list {
         height: calc(100vh - 15em);
+    }
+
+    .chat__users {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    .chat__users__header {
+        margin-top: 1em;
     }
 }
