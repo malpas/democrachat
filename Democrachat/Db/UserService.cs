@@ -32,7 +32,7 @@ namespace Democrachat.Db
         public void AddMuteTime(int userId, TimeSpan time)
         {
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
-            var timeString = $@"'{time.Seconds} seconds'";
+            var timeString = $@"'{time.TotalSeconds} seconds'";
             conn.Execute($"UPDATE account SET muted_until = greatest(now() + {timeString}, muted_until + {timeString}) WHERE id = @Id",
                 new { Id = userId });
         }
