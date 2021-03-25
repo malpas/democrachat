@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Democrachat.Auth;
+using Democrachat.Log;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
@@ -14,13 +15,15 @@ namespace Democrachat.Chat
         private IAuthService _authService;
         private ITopicNameService _topicNameService;
         private ActiveUserService _activeUserService;
+        private ILogger _logger;
 
         public ChatHub(IAuthService authService, ITopicNameService topicNameService,
-            ActiveUserService activeUserService)
+            ActiveUserService activeUserService, ILogger logger)
         {
             _authService = authService;
             _topicNameService = topicNameService;
             _activeUserService = activeUserService;
+            _logger = logger;
         }
 
         public void SendMessage(string topic, string message)
@@ -40,6 +43,7 @@ namespace Democrachat.Chat
             }
             Clients.Group(topic).SendAsync("ReceiveMessage", topic, _authService.GetUserById(userId).Username, message);
             _activeUserService.AddUserToTopic(topic, userId);
+            _logger.LogChatMessage(userId, topic, message);
         }
 
         public void IndicateTyping(string topic)

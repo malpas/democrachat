@@ -4,5 +4,6 @@ namespace Democrachat.Log
     {
         string ReadLog();
         void WriteLog(string message);
+        void LogChatMessage(int userId, string topic, string text);
     }
 }

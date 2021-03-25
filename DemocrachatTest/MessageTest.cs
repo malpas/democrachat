@@ -2,9 +2,9 @@ using System;
 using System.Security.Claims;
 using System.Threading;
 using Democrachat.Auth;
-using Democrachat.Auth.Models;
 using Democrachat.Chat;
 using Democrachat.Db.Models;
+using Democrachat.Log;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
 using Xunit;
@@ -19,16 +19,19 @@ namespace DemocrachatTest
         private ChatHub _hub;
         private Mock<IHubCallerClients> _mockClients;
         private Mock<HubCallerContext> _mockContext;
+        private Mock<ILogger> _mockLogger;
         
         private ClaimsPrincipal johnPrincipal = 
             new(new ClaimsIdentity(new [] {new Claim("Id", "10")}));
         private ClaimsPrincipal mutedGuyPrincipal = 
             new(new ClaimsIdentity(new [] {new Claim("Id", "5")}));
 
+
         public MessageTest()
         {
             _mockContext = new Mock<HubCallerContext>();
             _mockClients = new Mock<IHubCallerClients>();
+            _mockLogger = new Mock<ILogger>();
             _mockClients.Setup(c =>
                     c.Group(It.IsAny<string>()).SendCoreAsync(It.IsAny<string>(), It.IsAny<object?[]?>(),
                         It.IsAny<CancellationToken>()))
@@ -45,7 +48,7 @@ namespace DemocrachatTest
             var mockTopicValidator = new Mock<ITopicNameService>();
             mockTopicValidator.Setup(s => s.IsValidTopic("abc")).Returns(true);
             var activeUserService = new ActiveUserService(mockAuthService.Object);
-            _hub = new ChatHub(mockAuthService.Object, mockTopicValidator.Object, activeUserService)
+            _hub = new ChatHub(mockAuthService.Object, mockTopicValidator.Object, activeUserService, _mockLogger.Object)
             {
                 Context = _mockContext.Object, 
                 Clients = _mockClients.Object
@@ -95,6 +98,14 @@ namespace DemocrachatTest
             _hub.IndicateTyping("general");
             _mockClients.Verify(c => c.Group("general").SendCoreAsync("UserTyping", new []{ "general", "john"}, default),
                 Times.Once);
+        }
+
+        [Fact]
+        public void MessagesLogged()
+        {
+            _mockContext.Setup(c => c.User).Returns(johnPrincipal);
+            _hub.SendMessage("abc", "test");
+            _mockLogger.Verify(l => l.LogChatMessage(10, "abc", "test"));
         }
     }
 }

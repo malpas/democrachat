@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading;
 using Democrachat.Auth;
-using Democrachat.Auth.Models;
 using Democrachat.Chat;
 using Democrachat.Db.Models;
+using Democrachat.Log;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
@@ -19,6 +18,7 @@ namespace DemocrachatTest
 
         public UserListTest()
         {
+            var mockLogger = new Mock<ILogger>();
             var mockAuthService = new Mock<IAuthService>();
             mockAuthService.Setup(s => s.BatchGetUsernamesByIds(new[] {1}))
                 .Returns(new[] {"testuser"});
@@ -37,7 +37,7 @@ namespace DemocrachatTest
                     c.Group(It.IsAny<string>()).SendCoreAsync(It.IsAny<string>(), It.IsAny<object?[]?>(),
                         default))
                 .Callback(() => { });
-            _hub = new ChatHub(mockAuthService.Object, mockTopicService.Object, _activeUserService)
+            _hub = new ChatHub(mockAuthService.Object, mockTopicService.Object, _activeUserService, mockLogger.Object)
             {
                 Context = mockContext.Object,
                 Groups = mockGroups.Object,
