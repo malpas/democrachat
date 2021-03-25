@@ -74,12 +74,19 @@ a {
     margin-left: 1em;
 }
 
+.mr-2 {
+    margin-right: 0.5em;
+}
+
 .d-i {
     display: inline;
 }
 
 .text-white {
     color: white;
+}
+.text-right {
+    text-align: right;
 }
 
 .text-error {
@@ -88,6 +95,16 @@ a {
 
 .text-success {
     animation: success 4s infinite; 
+}
+
+.left {
+    grid-area: left;
+}
+.right {
+    grid-area: right;
+}
+.center {
+    grid-area: center;
 }
 
 @keyframes success {

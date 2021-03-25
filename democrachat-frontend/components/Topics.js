@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "@reach/router"
+import axios from "axios"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect } from "react"
 import GlobalContext from "../state"
 import Authorized from "./Authorized"
 import TopicBid from "./TopicBid"
+import TopicButton from "./TopicButton"
 
 const Topics = observer(() => {
     const state = useContext(GlobalContext)
@@ -27,7 +29,7 @@ const Topics = observer(() => {
             <div class="topics">
                 <h2 className="mt-0">Topics</h2>
                 <div className="topics__list">
-                    {state.chat.topics.map(topic => <button class="button button--100w" key={topic} onClick={() => joinTopic(topic)}>{topic}</button>)}
+                    {state.chat.topics.map(topic => <TopicButton topic={topic} key={topic} onClick={() => joinTopic(topic)} />)}
                 </div>
                 {state.auth.silver > 0 ?
                     <div className="topics__bid">

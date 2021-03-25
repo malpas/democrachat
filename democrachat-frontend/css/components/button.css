@@ -40,3 +40,9 @@
 .button--secondary:hover {
     background-color: #c57e7e;
 }
+
+.button--topic {
+    display: grid;
+    grid-template-areas: "left center right";
+    grid-template-columns: 1fr auto 1fr;
+}
