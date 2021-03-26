@@ -38,7 +38,7 @@ const ChatSender = ({ onSend, onChange }) => {
     return (
         <div class="chat__send">
             <form onSubmit={onLocalSubmit} class="form form--inline">
-                <input type="text" value={message} onChange={onLocalChange}></input>
+                <input type="text" className="textbox" value={message} onChange={onLocalChange}></input>
                 <input type="submit" class="button" value="Send"></input>
             </form>
         </div>

@@ -50,7 +50,7 @@ const UserActions = observer(({ username, onClose }) => {
         </div>
         <div class="user-actions__mute">
             <form className="form form--inline" onSubmit={muteUser}>
-                <input type="number" placeholder="silver" onChange={ev => setSilver(ev.target.value)} value={silver} />
+                <input type="number" className="textbox" placeholder="silver" onChange={ev => setSilver(ev.target.value)} value={silver} />
                 <input type="submit" className="button" value="Mute" />
             </form>
         </div>

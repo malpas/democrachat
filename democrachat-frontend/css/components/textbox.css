@@ -1,0 +1,15 @@
+.textbox {
+    border: 2px solid #cecece;
+    border-radius: 0.25em;
+    padding: 0.25em;
+    outline: none;
+}
+.textbox:focus {
+    border: 2px solid #5500ff;
+    box-shadow: none !important;
+}
+
+.textbox:invalid {
+    border: 2px solid #a53f3f;
+    box-shadow: none !important;
+}

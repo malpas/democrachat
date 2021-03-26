@@ -13,9 +13,9 @@ function Login({ onSubmit, onClickRegister, errorText }) {
         <h2 className="mt-0">Login</h2>
         {errorText ? <p class="text-error mt-0 mb-0">{errorText}</p> : null}
         <p class="form__label">Username</p>
-        <input type="text" class="form__control" required onChange={ev => setUsername(ev.target.value)} value={username}></input>
+        <input type="text" class="form__control textbox" required onChange={ev => setUsername(ev.target.value)} value={username}></input>
         <p class="form__label">Password</p>
-        <input type="password" class="form__control" required onChange={ev => setPassword(ev.target.value)} value={password}></input>
+        <input type="password" class="form__control textbox" required onChange={ev => setPassword(ev.target.value)} value={password}></input>
         <input type="submit" class="button" value="Login"></input>
         <span class="action mt-3 text-center" onClick={onClickRegister}>1-click sign-up</span>
     </form>

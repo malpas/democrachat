@@ -12,6 +12,7 @@
 @import "./components/navbar.css";
 @import "./components/user-actions.css";
 @import "./components/topics.css";
+@import "./components/textbox.css";
 
 body {
     background-color: #ebebeb;
