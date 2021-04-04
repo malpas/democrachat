@@ -1,5 +1,4 @@
 using System;
-using Democrachat.Auth.Models;
 using Democrachat.Db.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -41,6 +40,13 @@ namespace Democrachat.Db
         {
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
             conn.Execute("UPDATE account SET silver = silver - @Amount WHERE id = @Id",
+                new { Amount = amount, Id = userId });
+        }
+
+        public void AddSilver(int userId, int amount)
+        {            
+            using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
+            conn.Execute("UPDATE account SET silver = silver + @Amount WHERE id = @Id",
                 new { Amount = amount, Id = userId });
         }
     }

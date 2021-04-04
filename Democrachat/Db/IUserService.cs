@@ -1,5 +1,4 @@
 using System;
-using Democrachat.Auth.Models;
 using Democrachat.Db.Models;
 
 namespace Democrachat.Db
@@ -10,5 +9,6 @@ namespace Democrachat.Db
         UserData? GetDataByUsername(string username);
         void AddMuteTime(int userId, TimeSpan time);
         void SubtractSilver(int userId, int amount);
+        void AddSilver(int userId, int amount);
     }
 }
