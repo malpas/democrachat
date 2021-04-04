@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Democrachat.Auth;
 using Democrachat.Chat;
 using Democrachat.Db;
+using Democrachat.Inventory;
 using Democrachat.Log;
 using Democrachat.Power;
 using Democrachat.Rewards;
@@ -39,6 +40,8 @@ namespace Democrachat
             
             services.AddSingleton<IUserService, UserService>();
             services.AddScoped<ITopicService, TopicService>();
+            services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IInventoryService, InventoryService>();
             services.AddScoped<MuteService>();
             services.AddScoped<TopicBidService>();
             services.AddScoped<ILogger, Logger>();
