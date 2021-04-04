@@ -1,3 +1,6 @@
+--liquibase formatted sql
+
+--changeset creator:add-items
 CREATE TABLE IF NOT EXISTS item_template (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL,
@@ -10,3 +13,4 @@ CREATE TABLE IF NOT EXISTS item (
 	template_id INT REFERENCES item_template (id) NOT NULL,
 	public_uuid UUID NOT NULL DEFAULT gen_random_uuid()
 );
+--rollback DROP TABLE item; DROP TABLE item_template;

@@ -1,7 +1,0 @@
-CREATE TABLE IF NOT EXISTS chat_message (
-	id SERIAL PRIMARY KEY,
-	user_id INT REFERENCES account (id) NOT NULL,
-	topic TEXT NOT NULL, 
-	text TEXT NOT NULL,
-	time TIMESTAMP DEFAULT now()
-);
