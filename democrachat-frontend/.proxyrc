@@ -4,5 +4,11 @@
     },
     "/hub": {
         "target": "http://localhost:5000"
+    },
+    "/static": { /* Allow static images to be tested with a file server on port 1235 */
+        "target": "http://localhost:1235",
+        "pathRewrite": {
+            "^/static": ""
+        }
     }
 }
