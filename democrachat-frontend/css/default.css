@@ -79,6 +79,14 @@ a {
     margin-right: 0.5em;
 }
 
+.ml-2 {
+    margin-left: 0.5em;
+}
+
+.ml-3 {
+    margin-left: 1em;
+}
+
 .d-i {
     display: inline;
 }

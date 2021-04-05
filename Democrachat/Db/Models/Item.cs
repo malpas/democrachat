@@ -10,5 +10,6 @@ namespace Democrachat.Db.Models
         public string Script { get; init; }
         public Guid PublicUuid { get; set; }
         public int OwnerId { get; set; }
+        public string? ImageSrc { get; set; }
     }
 }

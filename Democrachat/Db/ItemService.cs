@@ -43,9 +43,9 @@ namespace Democrachat.Db
 
         private Item RetrieveTemplateInfo(Item item, IDbConnection conn)
         {
-            var (script, name) = conn.QueryFirst<(string, string)>("SELECT script, name FROM item_template WHERE id = @TemplateId",
+            var (script, name, imageSrc) = conn.QueryFirst<(string, string, string)>("SELECT script, name, image_src FROM item_template WHERE id = @TemplateId",
                 new {item.TemplateId});
-            return item with {Script = script, Name = name};
+            return item with {Script = script, Name = name, ImageSrc = imageSrc};
         }
     }
 }

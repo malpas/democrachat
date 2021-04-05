@@ -8,6 +8,7 @@ import Navbar from './Navbar'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify'
 import Faq from './Faq'
+import InventoryModal from './InventoryModal'
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                 <Chat path="/chat/:topic" />
             </Router>
             <ToastContainer closeOnClick={false} autoClose={40000} />
+            <InventoryModal />
         </GlobalContext.Provider>
     )
 }
