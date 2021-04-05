@@ -17,9 +17,9 @@ function TopicBid({ onBid, errors, result }) {
                     {errors.map(error => <li className="text-error" key={error}>{error}</li>)}
                 </ul> : null}
             <p className="form__label mt-0">Topic Name</p>
-            <input type="text" className="form__control" placeholder="e.g. architecture" value={name} onChange={ev => setName(ev.target.value)} />
+            <input type="text" className="form__control textbox" placeholder="e.g. architecture" value={name} onChange={ev => setName(ev.target.value)} />
             <p className="form__label">Silver</p>
-            <input type="number" className="form__control" value={silver} onChange={ev => setSilver(ev.target.value)} />
+            <input type="number" className="form__control textbox" value={silver} onChange={ev => setSilver(ev.target.value)} />
             <input type="submit" className="button button--secondary" value="Bid"></input>
         </form>
     )
