@@ -11,7 +11,14 @@ function TopicButton({ topic, onClick }) {
             })
     }
 
-    useEffect(updateTopicActivity)
+    useEffect(() => {
+        updateTopicActivity()
+        const updateInverval = setInterval(updateTopicActivity, 1000)
+
+        return () => {
+            clearInterval(updateInverval)
+        }
+    }, [])
 
     if (activeUsers && activeUsers.length > 0) {
         return <button className="button button--100w button--topic" onClick={onClick}>
