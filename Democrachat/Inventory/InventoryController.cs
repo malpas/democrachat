@@ -27,10 +27,15 @@ namespace Democrachat.Inventory
         }
 
         [HttpPost("use")]
-        public IActionResult UseInventory([FromBody] UseItemRequest request)
+        public IActionResult UseItem([FromBody] UseItemRequest request)
         {
             var userId = int.Parse(HttpContext.User.FindFirstValue("Id"));
-            return Ok(_inventoryService.UseItem(userId, request.Uuid));
+            var result = _inventoryService.UseItem(userId, request.Uuid);
+            if (result.Type == ItemResultType.Error)
+            {
+                return BadRequest(new {Error = result.Message});
+            }
+            return Ok(new { Message = result.Message});
         }
     }
 }
