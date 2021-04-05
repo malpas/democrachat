@@ -3,13 +3,13 @@
     box-sizing: border-box;
     margin-top: 0.5em;
     background-color: #5500ff;
+    height: 2.2em;
     color: #f9f9f9;
     border-radius: 0.25em;
     padding: 0.5em;
     cursor: pointer;
     border: none;
     border-bottom: 0.2em solid #5cba74;
-    margin-bottom: -0.3em;
     padding-top: 0.4em;
     transition: 0.25s;
 }
@@ -28,6 +28,10 @@
 .button--small {
     font-size: 0.65em;
     font-weight: bold;
+}
+.button--small:active {
+    top: 0.1em;
+    border: none;
 }
 
 .button--100w {
