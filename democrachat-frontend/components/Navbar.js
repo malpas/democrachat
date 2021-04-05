@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import GlobalContext from "../state"
 import logo from "url:../img/logo-dark.svg"
-import FinaliseModal from "./FinaliseModal"
+import { toast } from "react-toastify"
 
 const Navbar = observer(() => {
     const state = useContext(GlobalContext)
@@ -16,7 +16,10 @@ const Navbar = observer(() => {
     const logout = () => {
         state.auth.logout()
             .then(() => navigate("/"))
+            .catch(() => toast("Could not logout"))
     }
+
+    const toggleInventory = () => state.inventory.toggleOpen()
 
     return (
         <div className="container navbar">
@@ -26,7 +29,8 @@ const Navbar = observer(() => {
             {state.auth.username ?
                 <div className="navbar__right">
                     <div>{state.auth.gold}G {state.auth.silver}S</div>
-                    <div style={{ fontWeight: "bold", cursor: "pointer", marginLeft: "1em" }} class="button button--small" onClick={logout}>Logout</div>
+                    <button className="button button--small ml-2" onClick={toggleInventory}>Inventory</button>
+                    <div style={{ fontWeight: "bold" }} class="button button--small ml-2 pointer" onClick={logout}>Logout</div>
                 </div> : null}
         </div>
     )

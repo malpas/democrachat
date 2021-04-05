@@ -13,6 +13,7 @@ class RootStore {
         this.chat = new ChatStore(this)
         this.userActions = new UserActionStore(this)
         this.peer = new PeerStore(this)
+        this.inventory = new InventoryStore(this)
     }
 }
 
@@ -355,6 +356,44 @@ class PeerStore {
             this.remoteStream.getTracks().forEach(track => track.stop())
         this.currentCall.close()
         this.currentCall = null
+    }
+}
+
+class InventoryStore {
+    items
+    isOpen = false
+    message
+    error
+
+    constructor(root) {
+        this.root = root
+        makeAutoObservable(this)
+    }
+
+    getInventory() {
+        axios.get("/api/inventory", { withCredentials: true })
+            .then(resp => {
+                runInAction(() => {
+                    this.items = resp.data
+                })
+            })
+    }
+
+    useItem(uuid) {
+        axios.post("/api/inventory/use", { uuid }, { withCredentials: true })
+            .then(resp => {
+                if (resp.data.message) {
+                    this.message = resp.data.message
+                }
+            })
+            .then(() => this.getInventory())
+            .then(() => this.root.auth.fetchUserInfo())
+    }
+
+    toggleOpen() {
+        this.isOpen = !this.isOpen
+        this.message = null
+        this.getInventory()
     }
 }
 

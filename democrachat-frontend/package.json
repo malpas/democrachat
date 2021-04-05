@@ -25,7 +25,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-toastify": "^7.0.3",
-    "styled": "^1.0.0"
+    "styled": "^1.0.0",
+    "styled-components": "^5.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
