@@ -15,7 +15,13 @@ const FinaliseModal = ({ isOpen, onClose, onSubmit, errors }) => {
         onSubmit(username, password)
     }
 
-    return <div className="modal__wrapper">
+    const onCloseOutside = ev => {
+        var style = window.getComputedStyle(ev.target)
+        if (style.zIndex != 999) return
+        onClose()
+    }
+
+    return <div className="modal__wrapper" onClick={onCloseOutside}>
         <div className="modal__inner">
             <h2 className="modal__title">Finalise Account</h2>
             <button className="button modal__close" onClick={onClose}>X</button>

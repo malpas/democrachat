@@ -3,12 +3,16 @@ import React, { useContext, useEffect } from "react"
 import GlobalContext from "../state";
 import InventoryItems from "./InventoryItems";
 
-import { ItemGrid } from "./styled/ItemGrid";
-
 const InventoryModal = observer(() => {
     const state = useContext(GlobalContext)
 
     const toggleOpen = () => state.inventory.toggleOpen()
+
+    const onCloseOutside = ev => {
+        var style = window.getComputedStyle(ev.target)
+        if (style.zIndex != 999) return
+        toggleOpen()
+    }
 
     useEffect(() => {
         state.inventory.getInventory()
@@ -22,7 +26,7 @@ const InventoryModal = observer(() => {
         return null;
     }
     return (
-        <div className="modal__wrapper">
+        <div className="modal__wrapper" onClick={onCloseOutside}>
             <div className="modal__inner">
                 <h2 className="modal__title">Inventory</h2>
                 <button className="button modal__close" onClick={toggleOpen}>X</button>
