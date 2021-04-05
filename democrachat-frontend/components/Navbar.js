@@ -28,9 +28,9 @@ const Navbar = observer(() => {
             </div>
             {state.auth.username ?
                 <div className="navbar__right">
-                    <div>{state.auth.gold}G {state.auth.silver}S</div>
-                    <button className="button button--small ml-2" onClick={toggleInventory}>Inventory</button>
-                    <div style={{ fontWeight: "bold" }} class="button button--small ml-2 pointer" onClick={logout}>Logout</div>
+                    <span>{state.auth.gold}G {state.auth.silver}S</span>
+                    <button className="button button--small ml-2 mt-0" onClick={toggleInventory}>Inventory</button>
+                    <div class="button button--small ml-2 mt-0 pointer" onClick={logout}>Logout</div>
                 </div> : null}
         </div>
     )

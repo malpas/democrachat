@@ -26,7 +26,8 @@
 }
 
 .button--small {
-    font-size: 0.6em;
+    font-size: 0.65em;
+    font-weight: bold;
 }
 
 .button--100w {
