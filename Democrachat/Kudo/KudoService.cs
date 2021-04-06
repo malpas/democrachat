@@ -39,9 +39,13 @@ namespace Democrachat.Kudo
             {
                 throw new InvalidOperationException("Cannot send kudo to yourself");
             }
-            if (DateTime.Now < fromUser?.LastKudoTime.AddHours(8))
+            if (DateTime.Now < fromUser.LastKudoTime.AddHours(8))
             {
                 throw new InvalidOperationException("Can only send kudo every 8 hours");
+            }
+            if (DateTime.Now < fromUser.CreatedAt.AddDays(3))
+            {
+                throw new InvalidOperationException("Account too recent");
             }
             var templateId = SelectItem();
             var toUser = _userService.GetDataByUsername(toUsername);

@@ -20,5 +20,6 @@ namespace Democrachat.Db.Models
         public int Gold { get; set; }
         public int Silver { get; set; }
         public DateTime LastKudoTime { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

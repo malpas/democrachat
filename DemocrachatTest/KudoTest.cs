@@ -25,8 +25,8 @@ namespace DemocrachatTest
             _mockItemService = new Mock<IItemService>();
             _mockUserService = new Mock<IUserService>();
             _mockLogger = new Mock<ILogger>();
-            var sender = new UserData {Id = 1, Username = "sender", LastKudoTime = DateTime.Now - TimeSpan.FromHours(8)};
-            var recipient = new UserData {Id = 2, Username = "recipient"};
+            var sender = new UserData {Id = 1, Username = "sender", LastKudoTime = DateTime.Now - TimeSpan.FromHours(8), CreatedAt = DateTime.UnixEpoch};
+            var recipient = new UserData {Id = 2, Username = "recipient", CreatedAt = DateTime.UnixEpoch};
             _mockUserService.Setup(s => s.GetDataById(1)) .Returns(sender);
             _mockUserService.Setup(s => s.GetDataByUsername("sender")).Returns(sender);
             _mockUserService.Setup(s => s.GetDataByUsername("recipient")).Returns(recipient);
@@ -166,6 +166,23 @@ namespace DemocrachatTest
             var hash = SHA256.HashData(IPAddress.Loopback.GetAddressBytes());
             var hashText = BitConverter.ToString(hash).Replace("-", "").Substring(3, 5).ToLower();
             _mockLogger.Verify(l => l.WriteLog($"kudo from=sender to=recipient hash={hashText}"));
+        }
+
+        [Fact]
+        void NewUsersCannotKudo()
+        {
+            _mockUserService.Setup(s => s.GetDataById(1))
+                .Returns(new UserData {Id = 1, LastKudoTime = DateTime.UnixEpoch, CreatedAt = DateTime.Now});      
+            _mockKudoTableService.Setup(s => s.GetPossibleKudoItems()).Returns(new List<KudoListing>
+            {
+                new(1, 1)
+            });
+            
+            var e = Assert.Throws<InvalidOperationException>(() =>
+            {
+                _kudoService.GiveKudo(1, "recipient", IPAddress.Loopback);
+            });
+            Assert.Contains("recent", e.Message);
         }
     }
 }
