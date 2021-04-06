@@ -50,6 +50,13 @@ namespace Democrachat.Db
                 new { Amount = amount, Id = userId });
         }
 
+        public void AddGold(int userId, int amount)
+        {           
+            using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
+            conn.Execute("UPDATE account SET gold = gold + @Amount WHERE id = @Id",
+                new { Amount = amount, Id = userId });
+        }
+
         public void UpdateKudoTime(int userId, DateTime time)
         {
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));

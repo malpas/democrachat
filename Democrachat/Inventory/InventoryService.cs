@@ -34,6 +34,7 @@ namespace Democrachat.Inventory
             scope.User = _userService.GetDataById(userId)!;
             scope.AddSilver = new Action<int>(amount => _userService.AddSilver(userId, amount));
             scope.SubtractSilver = new Action<int>(amount => _userService.SubtractSilver(userId, amount));
+            scope.AddGold = new Action<int>(amount => _userService.AddGold(userId, amount));
             scope.Message = "";
             engine.CreateScriptSourceFromString(item.Script).Execute(scope);
             _itemService.DeleteItemByUuid(itemUuid);
