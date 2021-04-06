@@ -17,8 +17,6 @@ services:
         target: /app/log.txt
   postgres:
     image: postgres:13
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_DB: democrachat
       POSTGRES_PASSWORD: CHANGETHIS
