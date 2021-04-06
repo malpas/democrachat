@@ -16,7 +16,7 @@ services:
         source: ~/log.txt
         target: /app/log.txt
   postgres:
-    image: postgres
+    image: postgres:13
     ports:
       - "5432:5432"
     environment:
