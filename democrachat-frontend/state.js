@@ -230,6 +230,18 @@ class UserActionStore {
             })
     }
 
+    giveKudo(username) {
+        runInAction(() => this.userActionErrors = [])
+        runInAction(() => this.userActionResult = "")
+        return axios.post("/api/kudo", { username }, { withCredentials: true })
+            .then(_ => {
+                runInAction(() => this.userActionResult = "Success!")
+            })
+            .catch(err => {
+                runInAction(() => this.userActionErrors = [err.response.data?.error])
+            })
+    }
+
     topicBid(name, silver) {
         runInAction(() => {
             this.bidErrors = []

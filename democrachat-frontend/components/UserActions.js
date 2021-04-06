@@ -19,6 +19,10 @@ const UserActions = observer(({ username, onClose }) => {
         state.peer.call(username)
     }
 
+    const giveKudo = () => {
+        state.userActions.giveKudo(username)
+    }
+
     const updateVideo = () => {
         if (videoRef.current && videoRef.current.srcObject != state.peer.remoteStream) {
             videoRef.current.srcObject = state.peer.remoteStream
@@ -48,14 +52,13 @@ const UserActions = observer(({ username, onClose }) => {
                 </ul>
                 : null}
         </div>
-        <div class="user-actions__mute">
+        <div class="user-actions__buttons">
             <form className="form form--inline" onSubmit={muteUser}>
                 <input type="number" className="textbox" placeholder="silver" onChange={ev => setSilver(ev.target.value)} value={silver} />
                 <input type="submit" className="button" value="Mute" />
             </form>
-        </div>
-        <div className="user-actions__chat">
             {username != state.auth.username ? videoChatButton : null}
+            {username != state.auth.username ? <button className="button button--100w" onClick={giveKudo}>Kudo</button> : null}
         </div>
     </div>
 })

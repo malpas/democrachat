@@ -1,0 +1,87 @@
+using System;
+using System.Net;
+using System.Security.Cryptography;
+using Democrachat.Db;
+using Democrachat.Db.Models;
+using Democrachat.Log;
+using Priority_Queue;
+
+namespace Democrachat.Kudo
+{
+    public class KudoService : IKudoService
+    {
+        private IKudoTableService _kudoTableService;
+        private IItemService _itemService;
+        private IUserService _userService;
+        private ILogger _logger;
+
+        public KudoService(IKudoTableService kudoTableService, IItemService itemService, IUserService userService,
+            ILogger logger)
+        {
+            _kudoTableService = kudoTableService;
+            _itemService = itemService;
+            _userService = userService;
+            _logger = logger;
+        }
+
+        /// <summary>
+        /// Give an item to a user based on the weighted listings in the "kudo table",
+        /// which specifies possible item templates the recipient can get
+        /// </summary>
+        /// <param name="fromUserId">ID of user giving kudo</param>
+        /// <param name="toUsername">ID of user receiving kudo</param>
+        /// <param name="fromIp"></param>
+        /// <exception cref="InvalidOperationException">If no items in kudo table or recipient does not exist</exception>
+        public void GiveKudo(int fromUserId, string toUsername, IPAddress? fromIp)
+        {
+            var fromUser = _userService.GetDataById(fromUserId);
+            if (toUsername == fromUser.Username)
+            {
+                throw new InvalidOperationException("Cannot send kudo to yourself");
+            }
+            if (DateTime.Now < fromUser?.LastKudoTime.AddHours(8))
+            {
+                throw new InvalidOperationException("Can only send kudo every 8 hours");
+            }
+            var templateId = SelectItem();
+            var toUser = _userService.GetDataByUsername(toUsername);
+            if (toUser == null)
+            {
+                throw new InvalidOperationException($"Could not get user \"{toUsername}\"");
+            }
+            _itemService.CreateItem(toUser.Id, templateId);
+            _userService.UpdateKudoTime(fromUserId, DateTime.Now);
+
+            if (fromIp == null) return;
+            var hash = SHA256.HashData(fromIp.GetAddressBytes());
+            var hashText = BitConverter.ToString(hash).Replace("-", "").Substring(3, 5).ToLower();
+            _logger.WriteLog($"kudo from={fromUser.Username} to={toUsername} hash={hashText}");
+        }
+
+        private int SelectItem()
+        {
+            var sum = 0;
+            var queue = new SimplePriorityQueue<KudoListing, int>();
+            foreach (var kudoListing in _kudoTableService.GetPossibleKudoItems())
+            {
+                queue.Enqueue(kudoListing, kudoListing.Weight);
+                sum += kudoListing.Weight;
+            } 
+            if (queue.Count == 0)
+            {
+                throw new InvalidOperationException("No kudo items found");
+            }
+
+            var rand = new Random();
+            var selection = rand.Next(sum);
+            while (true)
+            {
+                var listing = queue.Dequeue();
+                selection -= listing.Weight;
+                
+                if (selection >= 0) continue;
+                return listing.TemplateId;
+            }
+        }
+    }
+}

@@ -6,7 +6,7 @@
     grid-template-areas: 
         "header"
         "errors"
-        "mute";
+        "buttons";
 }
 
 .user-actions__header {
@@ -23,8 +23,7 @@
     grid-area: errors;
 }
 
-.user-actions__mute {
-    grid-area: mute;
+.user-actions__buttons {
+    grid-area: buttons;
     display: grid;
-    grid-template-columns: 1fr auto;
 }

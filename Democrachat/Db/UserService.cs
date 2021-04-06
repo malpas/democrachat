@@ -49,5 +49,11 @@ namespace Democrachat.Db
             conn.Execute("UPDATE account SET silver = silver + @Amount WHERE id = @Id",
                 new { Amount = amount, Id = userId });
         }
+
+        public void UpdateKudoTime(int userId, DateTime time)
+        {
+            using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
+            conn.Execute("UPDATE account SET last_kudo_time = @Time", new {Time = time});
+        }
     }
 }

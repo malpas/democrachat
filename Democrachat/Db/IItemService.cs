@@ -9,5 +9,6 @@ namespace Democrachat.Db
         IEnumerable<Item> GetItemsForUserId(int userId);
         Item? GetItemByUuid(Guid uuid);
         void DeleteItemByUuid(Guid uuid);
+        void CreateItem(int userId, int templateId);
     }
 }

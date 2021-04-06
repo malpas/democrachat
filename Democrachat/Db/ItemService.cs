@@ -41,6 +41,13 @@ namespace Democrachat.Db
             conn.Execute("DELETE FROM item WHERE public_uuid = @Uuid", new {Uuid = uuid});
         }
 
+        public void CreateItem(int userId, int templateId)
+        {
+            using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
+            conn.Execute("INSERT INTO item (owner_id, template_id) VALUES (@UserId, @TemplateId)",
+                new {UserId = userId, TemplateId = templateId});
+        }
+
         private Item RetrieveTemplateInfo(Item item, IDbConnection conn)
         {
             var (script, name, imageSrc) = conn.QueryFirst<(string, string, string)>("SELECT script, name, image_src FROM item_template WHERE id = @TemplateId",

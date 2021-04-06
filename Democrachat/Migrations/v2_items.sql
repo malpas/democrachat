@@ -19,3 +19,15 @@ CREATE TABLE IF NOT EXISTS item (
 --changeset creator:add-item-image
 ALTER TABLE item_template ADD COLUMN IF NOT EXISTS image_src TEXT;
 --rollback ALTER TABLE item_template DROP COLUMN image_src;
+
+
+--changeset creator:add-kudo
+ALTER TABLE account ADD COLUMN IF NOT EXISTS last_kudo_time TIMESTAMP;
+
+CREATE TABLE IF NOT EXISTS kudo_item (
+    id SERIAL PRIMARY KEY,
+    template_id INT REFERENCES item_template (id),
+    weight INT
+)
+--rollback ALTER TABLE account DROP COLUMN last_kudo_time;
+--rollback DROP TABLE kudo_item;
