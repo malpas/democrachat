@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography;
+using System.Threading;
+using Democrachat.Chat;
 using Democrachat.Db;
 using Democrachat.Db.Models;
 using Democrachat.Kudo;
 using Democrachat.Log;
+using Microsoft.AspNetCore.SignalR;
 using Moq;
 using Xunit;
 
@@ -18,6 +21,7 @@ namespace DemocrachatTest
         private Mock<IUserService> _mockUserService;
         private KudoService _kudoService;
         private Mock<ILogger> _mockLogger;
+        private Mock<IHubContext<ChatHub>> _mockChatContext;
 
         public KudoTest()
         {
@@ -25,14 +29,17 @@ namespace DemocrachatTest
             _mockItemService = new Mock<IItemService>();
             _mockUserService = new Mock<IUserService>();
             _mockLogger = new Mock<ILogger>();
+            _mockChatContext = new Mock<IHubContext<ChatHub>>();
             var sender = new UserData {Id = 1, Username = "sender", LastKudoTime = DateTime.Now - TimeSpan.FromHours(8), CreatedAt = DateTime.UnixEpoch};
             var recipient = new UserData {Id = 2, Username = "recipient", CreatedAt = DateTime.UnixEpoch};
             _mockUserService.Setup(s => s.GetDataById(1)) .Returns(sender);
             _mockUserService.Setup(s => s.GetDataByUsername("sender")).Returns(sender);
             _mockUserService.Setup(s => s.GetDataByUsername("recipient")).Returns(recipient);
+            _mockChatContext.Setup(cc => cc.Clients.User(It.IsAny<string>()))
+                .Returns(new Mock<IClientProxy>().Object);
 
             _kudoService = new KudoService(_mockKudoTableService.Object, _mockItemService.Object,
-                _mockUserService.Object, _mockLogger.Object);
+                _mockUserService.Object, _mockLogger.Object, _mockChatContext.Object);
         }
         
         [Fact]
@@ -183,6 +190,19 @@ namespace DemocrachatTest
                 _kudoService.GiveKudo(1, "recipient", IPAddress.Loopback);
             });
             Assert.Contains("recent", e.Message);
+        }
+
+        [Fact]
+        void KudoSendsChatAlert()
+        {           
+            _mockKudoTableService.Setup(s => s.GetPossibleKudoItems()).Returns(new List<KudoListing>
+            {
+                new(1, 1)
+            });
+            _kudoService.GiveKudo(1, "recipient", IPAddress.Loopback);
+            _mockChatContext.Verify(cc =>
+                cc.Clients.User("2").SendCoreAsync("ReceiveMessage", new object? [] { "all", "cc",
+                    "sender just sent you a kudo. Check your inventory!" }, default));
         }
     }
 }

@@ -1,9 +1,11 @@
 using System;
 using System.Net;
 using System.Security.Cryptography;
+using Democrachat.Chat;
 using Democrachat.Db;
 using Democrachat.Db.Models;
 using Democrachat.Log;
+using Microsoft.AspNetCore.SignalR;
 using Priority_Queue;
 
 namespace Democrachat.Kudo
@@ -14,14 +16,16 @@ namespace Democrachat.Kudo
         private IItemService _itemService;
         private IUserService _userService;
         private ILogger _logger;
+        private IHubContext<ChatHub> _chatHubContext;
 
         public KudoService(IKudoTableService kudoTableService, IItemService itemService, IUserService userService,
-            ILogger logger)
+            ILogger logger, IHubContext<ChatHub> chatHubContext)
         {
             _kudoTableService = kudoTableService;
             _itemService = itemService;
             _userService = userService;
             _logger = logger;
+            _chatHubContext = chatHubContext;
         }
 
         /// <summary>
@@ -60,6 +64,7 @@ namespace Democrachat.Kudo
             var hash = SHA256.HashData(fromIp.GetAddressBytes());
             var hashText = BitConverter.ToString(hash).Replace("-", "").Substring(3, 5).ToLower();
             _logger.WriteLog($"kudo from={fromUser.Username} to={toUsername} hash={hashText}");
+            _chatHubContext.Clients.User(toUser.Id.ToString()).SendCoreAsync("ReceiveMessage", new object? []{"all", "cc", $"{fromUser.Username} just sent you a kudo. Check your inventory!"});
         }
 
         private int SelectItem()

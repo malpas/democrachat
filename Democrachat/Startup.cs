@@ -10,6 +10,7 @@ using Democrachat.Rewards;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -55,6 +56,8 @@ namespace Democrachat
 
             services.AddSingleton<RewardService>();
             services.AddSingleton<PeerService>();
+
+            services.AddSingleton<IUserIdProvider, UserIdProvider>();
 
             services.AddControllers();
             services.AddSignalR();

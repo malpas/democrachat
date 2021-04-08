@@ -15,7 +15,7 @@ const ChatMessages = ({ topic, messages, navigate }) => (
             <h2>@{topic}</h2>
         </div>
         <div className="chat__messages__list" id="chat">
-            {messages.filter(message => message.topic === topic).map(message =>
+            {messages.filter(message => message.topic === topic || message.topic === "all").map(message =>
                 <p className="chat__messages__message"><strong>{message.username}</strong> {message.text}</p>
             )}
         </div>
