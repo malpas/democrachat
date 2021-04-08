@@ -29,19 +29,19 @@ const Home = observer(() => {
     return (
         <div class="home-bg">
             <div class="vertical-center-wrap">
-                <div class="home">
+                <div class="home container">
                     <div class="home__header">
                         <img src={logo} class="logo mb-3" alt="Democrachat" />
                     </div>
                     <div class="home__blurb text-white">
-                        <span class="dramatic-text">The chat platform for hip people</span>
+                        <span class="dramatic-text mt-0">The chat platform for hip people</span>
+                        <p>Democrachat is an experimental, semi-democratic chat site. See the <Link to="/faq" className="mt-1 home__faq">FAQ</Link> for more info.</p>
                     </div>
                     <div class="home__login">
                         <Login onSubmit={(username, password) => login(username, password)}
                             onClickRegister={register}
                             errorText={state.auth.errorText} />
                     </div>
-                    <Link to="/faq" className="mt-1 home__faq">FAQ</Link>
                 </div >
             </div>
         </div>

@@ -23,26 +23,21 @@
 }
 
 .home__login {
-    background-color: #fff;
+    background-color: #f9f9f9;
     grid-area: login;
-    margin-top: 1em;
     border-radius: 0.25em;
 }
 
 
 @media (min-width: 650px) {
     .home {
-        grid-template-areas: 
-            "header header"
-            "blurb login"
-            ". faq";
-        grid-template-columns: 3fr 2fr;
+        max-width: 800px !important;
     }
-}
+    .home__login {
+        padding: 1em 2em;
+    }
 
-@media (min-width: 1000px) {
-    .home {
-        max-width: 1000px;
-        margin: auto;
+    .home__blurb {
+        margin-right: 0.5em;
     }
 }
