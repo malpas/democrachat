@@ -8,7 +8,6 @@
     grid-template-columns: 1fr auto;
     background: #fff;
     border-radius: 0.5em;
-    padding: 1em;
 }
 
 .topics__header {
@@ -17,7 +16,8 @@
 
 .topics__list {
     grid-area: list;
-    margin-bottom: 2em;;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .topics__bid {
@@ -40,5 +40,9 @@
     }
     .topics__bid {
         font-size: 0.9em;
+    }
+
+    .topics__list {
+        margin-bottom: 1em;
     }
 }
