@@ -4,7 +4,7 @@ import React from "react"
 function Faq() {
     const navigate = useNavigate()
 
-    return <div className="container container--white">
+    return <div className="container container--white mb-0">
         <span className="action" onClick={() => navigate(-1)}>Back</span>
         <h2>Frequently Asked Questions</h2>
         <ul>

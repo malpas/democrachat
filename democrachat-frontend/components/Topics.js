@@ -25,7 +25,7 @@ const Topics = observer(() => {
     }
 
     return <Authorized>
-        <div className="container container--white">
+        <div className="container container--white mb-0">
             <div class="topics">
                 <h2 className="mt-0">Topics</h2>
                 <div className="topics__list">
