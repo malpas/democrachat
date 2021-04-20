@@ -2,7 +2,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
-using Democrachat.Auth;
+using Democrachat.Db;
 using Democrachat.Log;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -12,15 +12,15 @@ namespace Democrachat.Chat
     [Authorize]
     public class ChatHub : Hub
     {
-        private IAuthService _authService;
+        private IUserService _userService;
         private ITopicNameService _topicNameService;
         private ActiveUserService _activeUserService;
         private ILogger _logger;
 
-        public ChatHub(IAuthService authService, ITopicNameService topicNameService,
+        public ChatHub(IUserService userService, ITopicNameService topicNameService,
             ActiveUserService activeUserService, ILogger logger)
         {
-            _authService = authService;
+            _userService = userService;
             _topicNameService = topicNameService;
             _activeUserService = activeUserService;
             _logger = logger;
@@ -33,7 +33,7 @@ namespace Democrachat.Chat
             if (!_topicNameService.IsValidTopic(topic))
                 return;
             var userId = int.Parse(Context.User.FindFirstValue("Id"));
-            var userData = _authService.GetUserById(userId);
+            var userData = _userService.GetDataById(userId);
             if (DateTime.Now <= userData.MutedUntil)
             {
                 var secondsLeft = Math.Round((userData.MutedUntil - DateTime.Now).TotalSeconds + 1);
@@ -41,7 +41,7 @@ namespace Democrachat.Chat
                     $"You're muted. Wait {secondsLeft} seconds.");
                 return;
             }
-            Clients.Group(topic).SendAsync("ReceiveMessage", topic, _authService.GetUserById(userId).Username, message);
+            Clients.Group(topic).SendAsync("ReceiveMessage", topic, _userService.GetDataById(userId)?.Username, message);
             _activeUserService.AddUserToTopic(topic, userId);
             _logger.LogChatMessage(userId, topic, message);
         }
@@ -49,7 +49,7 @@ namespace Democrachat.Chat
         public void IndicateTyping(string topic)
         {
             var userId = int.Parse(Context.User.FindFirstValue("Id"));
-            Clients.Group(topic).SendAsync("UserTyping", topic, _authService.GetUserById(userId).Username);
+            Clients.Group(topic).SendAsync("UserTyping", topic, _userService.GetDataById(userId)?.Username);
         }
 
         public void JoinTopic(string topic)

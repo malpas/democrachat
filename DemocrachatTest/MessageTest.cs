@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading;
 using Democrachat.Auth;
 using Democrachat.Chat;
+using Democrachat.Db;
 using Democrachat.Db.Models;
 using Democrachat.Log;
 using Microsoft.AspNetCore.SignalR;
@@ -40,15 +41,15 @@ namespace DemocrachatTest
                     c.Caller.SendCoreAsync(It.IsAny<string>(), It.IsAny<object?[]?>(),
                         It.IsAny<CancellationToken>()))
                 .Callback(() => { });
-            var mockAuthService = new Mock<IAuthService>();
-            mockAuthService.Setup(s => s.GetUserById(10))
+            var mockUserService = new Mock<IUserService>();
+            mockUserService.Setup(s => s.GetDataById(10))
                 .Returns(new UserData {Username = "john"});
-            mockAuthService.Setup(s => s.GetUserById(5))
+            mockUserService.Setup(s => s.GetDataById(5))
                 .Returns(new UserData {Username = "mutedguy", Id = 5, MutedUntil = DateTime.Now + TimeSpan.FromMinutes(1)});
             var mockTopicValidator = new Mock<ITopicNameService>();
             mockTopicValidator.Setup(s => s.IsValidTopic("abc")).Returns(true);
-            var activeUserService = new ActiveUserService(mockAuthService.Object);
-            _hub = new ChatHub(mockAuthService.Object, mockTopicValidator.Object, activeUserService, _mockLogger.Object)
+            var activeUserService = new ActiveUserService(mockUserService.Object);
+            _hub = new ChatHub(mockUserService.Object, mockTopicValidator.Object, activeUserService, _mockLogger.Object)
             {
                 Context = _mockContext.Object, 
                 Clients = _mockClients.Object

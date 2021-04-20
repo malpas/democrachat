@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Democrachat.Auth;
 using Democrachat.Chat;
+using Democrachat.Db;
 using Democrachat.Db.Models;
 using Democrachat.Log;
 using Microsoft.AspNetCore.Mvc;
@@ -19,25 +20,26 @@ namespace DemocrachatTest
         public UserListTest()
         {
             var mockLogger = new Mock<ILogger>();
-            var mockAuthService = new Mock<IAuthService>();
-            mockAuthService.Setup(s => s.BatchGetUsernamesByIds(new[] {1}))
+            var mockUserService = new Mock<IUserService>();
+            mockUserService.Setup(s => s.BatchGetUsernamesByIds(new[] {1}))
                 .Returns(new[] {"testuser"});
-            mockAuthService.Setup(s => s.BatchGetUsernamesByIds(new int[] {}))
+            mockUserService.Setup(s => s.BatchGetUsernamesByIds(new int[] {}))
                 .Returns(new[] {""});
-            mockAuthService.Setup(s => s.GetUserById(1)).Returns(new UserData {Username = "testuser"});
+            mockUserService.Setup(s => s.GetDataById(1)).Returns(new UserData {Username = "testuser"});
             var mockContext = new Mock<HubCallerContext>();
             mockContext.Setup(c => c.User!.FindFirst(It.IsAny<string>()))
                 .Returns(new Claim("Id", "1"));
             var mockTopicService = new Mock<ITopicNameService>();
             mockTopicService.Setup(s => s.IsValidTopic("general")).Returns(true);
-            _activeUserService = new ActiveUserService(mockAuthService.Object);
+            _activeUserService = new ActiveUserService(mockUserService.Object);
             var mockGroups = new Mock<IGroupManager>();
             var mockClients = new Mock<IHubCallerClients>();
             mockClients.Setup(c =>
                     c.Group(It.IsAny<string>()).SendCoreAsync(It.IsAny<string>(), It.IsAny<object?[]?>(),
                         default))
                 .Callback(() => { });
-            _hub = new ChatHub(mockAuthService.Object, mockTopicService.Object, _activeUserService, mockLogger.Object)
+
+            _hub = new ChatHub(mockUserService.Object, mockTopicService.Object, _activeUserService, mockLogger.Object)
             {
                 Context = mockContext.Object,
                 Groups = mockGroups.Object,

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Democrachat.Db.Models;
 
 namespace Democrachat.Db
@@ -12,5 +13,9 @@ namespace Democrachat.Db
         void AddSilver(int userId, int amount);
         void AddGold(int userId, int amount);
         void UpdateKudoTime(int userId, DateTime time);
+        void FinalizeNewUser(int id, string username, string password);
+        IEnumerable<UserData> GetOrderedUsersByWealth();
+        IEnumerable<string> BatchGetUsernamesByIds(IEnumerable<int> ids);
+        int RegisterUser();
     }
 }

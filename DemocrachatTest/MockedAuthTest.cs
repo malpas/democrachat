@@ -1,12 +1,14 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Democrachat;
 using Democrachat.Auth;
 using Democrachat.Auth.Models;
 using Democrachat.Db.Models;
+using DemocrachatTest.Fakes;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,40 +23,22 @@ namespace DemocrachatTest
     public class MockedAuthTest : IClassFixture<WebApplicationFactory<Startup>>
     {
         private HttpClient _client;
-        private Mock<IAuthService> _authServiceMock;
+        private IAuthService _authService;
+        private WebApplicationFactory<Startup> _factory;
 
         public MockedAuthTest(WebApplicationFactory<Startup> factory)
         {
-            _authServiceMock = new Mock<IAuthService>();
-            var userData = new UserData { Username = "username", Id = 10, Hash = "hashashbecausenotguest"};
-            _authServiceMock.Setup(s => s.AttemptLogin("username", "password"))
-                .Returns(userData);
-            _authServiceMock.Setup(s => s.RegisterUser())
-                .Returns(() =>
-                {
-                    _authServiceMock.Setup(s => s.GetUserById(20))
-                        .Returns(new UserData {Username = "user23423", Hash = null, Id = 20});
-                    return new RegistrationResult(20);
-                });
-            _authServiceMock.Setup(s => s.GetUserById(10))
-                .Returns(userData);
-            _authServiceMock.Setup(s => s.IsUsernameTaken("username")).Returns(true);
-            // Simulate user finalization
-            _authServiceMock.Setup(s => s.FinalizeNewUser(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Callback((int id, string username, string password) =>
-                {
-                    _authServiceMock.Setup(s => s.AttemptLogin(username, password))
-                        .Returns(new UserData {Username = username, Id = id});
-                    _authServiceMock.Setup(s => s.GetUserById(id))
-                        .Returns(new UserData { Username = username, Id = id});
-                });
-            
+            var fakeUserService = new FakeUserService();
+            var hash = BCrypt.Net.BCrypt.HashPassword("password");
+            fakeUserService.UserData.Add(new UserData { Username = "username", Id = 10, Hash = hash});
+            _authService = new AuthService(fakeUserService);
             _client = factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureTestServices(services => {
-                    services.AddSingleton(_ => _authServiceMock.Object); 
+                    services.AddSingleton(_ => _authService); 
                 });
             }).CreateClient();
+            _factory = factory;
         }
 
         [Fact]
@@ -145,7 +129,7 @@ namespace DemocrachatTest
         {
             await _client.PostAsync("/api/auth/register", null!);
             var response = await _client.PostAsync("/api/auth/finalize", 
-                new StringContent("{\"username\": \"username\", \"password\": \"existinguser\"}", Encoding.Default, "application/json"));
+                JsonContent.Create(new {Username = "username", Password = "existinguser"}));
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.Contains("already taken", await response.Content.ReadAsStringAsync());
         }
@@ -167,6 +151,26 @@ namespace DemocrachatTest
                 JsonContent.Create(new {Username = "username", Password = "password"}));
             var response = await _client.PostAsync("/api/auth/register", null!);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }       
+        
+        [Fact]
+        public async Task NaughtyWordsGiveFakeUsernameTakenMsg()
+        {
+            foreach (var naughtyWord in AuthService.NaughtyWordList)
+            {
+                _client = _factory.WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureTestServices(services => {
+                        services.AddSingleton(_ => _authService); 
+                    });
+                }).CreateClient();
+                await _client.PostAsync("/api/auth/register", null!);
+                var response = await _client.PostAsync("/api/auth/finalize",
+                    JsonContent.Create(new {Username = $"{naughtyWord}uu", Password = "passwordwersdf"}));
+                Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+                Assert.Contains("taken", 
+                    (await response.Content.ReadAsStringAsync()).ToLower());
+            }
         }
     }
 }

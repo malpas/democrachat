@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
-using Democrachat.Auth;
+using Democrachat.Db;
 
 namespace Democrachat.Chat
 {
     public class ActiveUserService
     {
         private Dictionary<string, HashSet<int>> _topicUserIds = new();
-        private IAuthService _authService;
+        private IUserService _userService;
 
-        public ActiveUserService(IAuthService authService)
+        public ActiveUserService(IUserService userService)
         {
-            _authService = authService;
+            _userService = userService;
         }
 
         public IEnumerable<string> GetUsersInTopic(string topic)
@@ -20,7 +20,7 @@ namespace Democrachat.Chat
             if (!_topicUserIds.ContainsKey(topic) || _topicUserIds[topic].IsNullOrEmpty())
                 return new List<string>();
             var userIds = _topicUserIds[topic];
-            return _authService.BatchGetUsernamesByIds(userIds);
+            return _userService.BatchGetUsernamesByIds(userIds);
         }
 
         public void AddUserToTopic(string topic, int userId)
