@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Democrachat.Db;
 using Democrachat.Db.Models;
+using Microsoft.OpenApi.Validations.Rules;
 
 namespace DemocrachatTest.Fakes
 {
     public class FakeUserService : IUserService
     {
         public List<UserData> UserData = new();
-        
+        public bool IsLoginLogged = false;
+
         public UserData? GetDataById(int id)
         {
             return UserData.FirstOrDefault(u => u.Id == id);
@@ -89,6 +91,11 @@ namespace DemocrachatTest.Fakes
             var id = UserData.Count;
             UserData.Add(new UserData { Id = id, Username = "user23424"});
             return id;
+        }
+
+        public void AddLogin(int id)
+        {
+            IsLoginLogged = true;
         }
     }
 }

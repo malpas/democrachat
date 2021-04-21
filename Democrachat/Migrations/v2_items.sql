@@ -31,3 +31,11 @@ CREATE TABLE IF NOT EXISTS kudo_item (
 )
 --rollback ALTER TABLE account DROP COLUMN last_kudo_time;
 --rollback DROP TABLE kudo_item;
+
+--changeset creator:add-login
+CREATE TABLE IF NOT EXISTS login (
+    id SERIAL PRIMARY KEY,
+    account_id INT REFERENCES account (id) ON DELETE CASCADE,
+    time TIMESTAMP DEFAULT NOW()
+);
+--rollback DROP TABLE login;

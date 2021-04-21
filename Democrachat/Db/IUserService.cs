@@ -17,5 +17,6 @@ namespace Democrachat.Db
         IEnumerable<UserData> GetOrderedUsersByWealth();
         IEnumerable<string> BatchGetUsernamesByIds(IEnumerable<int> ids);
         int RegisterUser();
+        void AddLogin(int id);
     }
 }

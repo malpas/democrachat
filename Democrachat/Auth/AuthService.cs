@@ -25,6 +25,8 @@ namespace Democrachat.Auth
             {
                 return null;
             }
+
+            _userService.AddLogin(userData.Id);
             return userData;
         }
 
