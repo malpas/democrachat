@@ -29,7 +29,7 @@ class ChatStore {
     }
 
     connect() {
-        if (this.connection) return Promise.resolve();
+        if (this.connection?.state == HubConnectionState.Connected) return Promise.resolve();
 
         this.connection = new HubConnectionBuilder()
             .withUrl("/hub/chat", { transport: HttpTransportType.ServerSentEvents })
