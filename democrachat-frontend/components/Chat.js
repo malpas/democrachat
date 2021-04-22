@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useNavigate } from "@reach/router"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
+import { Helmet } from "react-helmet"
 import GlobalContext from "../state"
 import Authorized from "./Authorized"
 import FinaliseModal from "./FinaliseModal"
@@ -52,6 +53,14 @@ const Chat = observer(({ topic }) => {
 
     const [isFinaliseOpen, setIsFinaliseOpen] = useState()
 
+    var title = `Democrachat - ${topic}`
+    if (state.chat.lastMessageTime) {
+        var timeSinceMessage = (new Date()).getTime() - state.chat.lastMessageTime
+        if (timeSinceMessage < 1000 || (timeSinceMessage > 2000 && timeSinceMessage < 3000)) {
+            title = title.toUpperCase()
+        }
+    }
+
 
     useEffect(() => {
         state.chat.connect()
@@ -90,6 +99,9 @@ const Chat = observer(({ topic }) => {
 
     return (
         <Authorized>
+            <Helmet>
+                <title>{title}</title>
+            </Helmet>
             <div className="container chat">
                 <FinaliseModal isOpen={isFinaliseOpen}
                     onClose={() => setIsFinaliseOpen(false)}

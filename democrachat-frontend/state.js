@@ -22,6 +22,7 @@ class ChatStore {
     messages = []
     topics = []
     typingIndicators = []
+    lastMessageTime
 
     constructor(root) {
         this.root = root
@@ -54,6 +55,7 @@ class ChatStore {
             if (chat) {
                 chat.scrollTop = chat.scrollHeight
             }
+            runInAction(() => this.lastMessageTime = (new Date()).getTime())
         })
 
         connection.on("UserTyping", (topic, username) => {
