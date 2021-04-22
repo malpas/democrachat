@@ -1,10 +1,14 @@
 import { Link, useNavigate } from "@reach/router"
 import React from "react"
+import { Helmet } from "react-helmet"
 
 function Faq() {
     const navigate = useNavigate()
 
     return <div className="container container--white mb-0">
+        <Helmet>
+            <title>Democrachat - FAQ</title>
+        </Helmet>
         <span className="action" onClick={() => navigate(-1)}>Back</span>
         <h2>Frequently Asked Questions</h2>
         <ul>
