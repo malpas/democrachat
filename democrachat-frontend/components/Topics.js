@@ -2,6 +2,7 @@ import { Link, useNavigate } from "@reach/router"
 import axios from "axios"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect } from "react"
+import { Helmet } from "react-helmet"
 import GlobalContext from "../state"
 import Authorized from "./Authorized"
 import TopicBid from "./TopicBid"
@@ -25,6 +26,9 @@ const Topics = observer(() => {
     }
 
     return <Authorized>
+        <Helmet>
+            <title>Democrachat - Topics</title>
+        </Helmet>
         <div className="container container--white mb-0">
             <div class="topics">
                 <h2 className="mt-0 mb-0">Topics</h2>
