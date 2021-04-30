@@ -20,6 +20,10 @@ namespace Democrachat.Auth
         public UserData? AttemptLogin(string username, string password)
         {
             var userData = _userService.GetDataByUsername(username);
+            if (userData == null)
+            {
+                return null;
+            }
             var hash = userData?.Hash;
             if (hash != null && !BCrypt.Net.BCrypt.Verify(password, hash))
             {
