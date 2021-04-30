@@ -2,26 +2,34 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useNavigate } from "@reach/router"
 import { observer } from "mobx-react-lite"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { Helmet } from "react-helmet"
 import GlobalContext from "../state"
 import Authorized from "./Authorized"
 import FinaliseModal from "./FinaliseModal"
 import UserList from "./UserList"
 
-const ChatMessages = ({ topic, messages, navigate }) => (
-    <div className="chat__messages">
-        <div className="chat__messages__header">
-            <FontAwesomeIcon icon={faChevronLeft} size="lg" className="pointer" onClick={() => navigate("/topics")} />
-            <h2>@{topic}</h2>
+const ChatMessages = ({ topic, messages, navigate }) => {
+    const chatUserRef = useRef()
+
+    useEffect(() => {
+        chatUserRef.current.scrollTop = chatUserRef.current.scrollHeight
+    }, [])
+
+    return (
+        <div className="chat__messages">
+            <div className="chat__messages__header">
+                <FontAwesomeIcon icon={faChevronLeft} size="lg" className="pointer" onClick={() => navigate("/topics")} />
+                <h2>@{topic}</h2>
+            </div>
+            <div className="chat__messages__list" id="chat" ref={chatUserRef}>
+                {messages.filter(message => message.topic === topic || message.topic === "all").map(message =>
+                    <p className="chat__messages__message"><strong>{message.username}</strong> {message.text}</p>
+                )}
+            </div>
         </div>
-        <div className="chat__messages__list" id="chat">
-            {messages.filter(message => message.topic === topic || message.topic === "all").map(message =>
-                <p className="chat__messages__message"><strong>{message.username}</strong> {message.text}</p>
-            )}
-        </div>
-    </div>
-)
+    )
+}
 
 const ChatSender = ({ onSend, onChange }) => {
     const [message, setMessage] = useState("")
