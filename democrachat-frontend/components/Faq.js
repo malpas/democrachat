@@ -40,7 +40,7 @@ function Faq() {
         <p>The first thing you should try is refreshing the page. Otherwise, take a screenshot if possible and ask for help in <i>@general</i>.</p>
 
         <h3 id="topicbidding">What is topic bidding?</h3>
-        <p>Topic bidding allows users to spending gold to suggest new topic rooms. At a certain threshold of silver, topics are automatically considered for addition to the Democrachat universe.</p>
+        <p>Topic bidding allows users to silver to suggest new topic rooms. At a certain threshold of silver, topics are automatically considered for addition to the Democrachat universe.</p>
     </div>
 }
 
