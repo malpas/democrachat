@@ -16,6 +16,7 @@ function Faq() {
             <li><a href="#whatdoes00mean">What does 0G 0S mean?</a></li>
             <li><a href="#useofsilver">What can I do with silver?</a></li>
             <li><a href="#getgold">How do I get gold?</a></li>
+            <li><a href="#kudo">What is a kudo?</a></li>
             <li><a href="#technicalissues">I'm having a technical issue. Help!</a></li>
             <li><a href="#topicbidding">What is topic bidding?</a></li>
         </ul>
@@ -31,6 +32,9 @@ function Faq() {
 
         <h3 id="getgold">How do I get gold?</h3>
         <p>Be patient and keep contributing to conversations. There are currently no standardized ways to earn gold.</p>
+
+        <h3 id="kudo">What is a kudo?</h3>
+        <p>A "kudo" is a random gift. Reward people and form trust by sending them. Your account must not be recent to send kudos.</p>
 
         <h3 id="technicalissues">I'm having a technical issue. Help!</h3>
         <p>The first thing you should try is refreshing the page. Otherwise, take a screenshot if possible and ask for help in <i>@general</i>.</p>
