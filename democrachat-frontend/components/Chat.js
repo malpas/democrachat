@@ -56,7 +56,7 @@ const Chat = observer(({ topic }) => {
     var title = `Democrachat - ${topic}`
     if (state.chat.lastMessageTime) {
         var timeSinceMessage = (new Date()).getTime() - state.chat.lastMessageTime
-        var increment = Math.floor(timeSinceMessage / 1000)
+        var increment = Math.floor(timeSinceMessage / 500)
         if (increment <= 4 && increment % 2 == 0) {
             title = `! DEMOCRACHAT - ${topic.toUpperCase()} !`
         }

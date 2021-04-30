@@ -27,6 +27,10 @@ class ChatStore {
     constructor(root) {
         this.root = root
         makeAutoObservable(this)
+
+        if (localStorage.messages) {
+            this.messages = JSON.parse(localStorage.messages)
+        }
     }
 
     connect() {
@@ -56,6 +60,7 @@ class ChatStore {
                 chat.scrollTop = chat.scrollHeight
             }
             runInAction(() => this.lastMessageTime = (new Date()).getTime())
+            localStorage.messages = JSON.stringify(this.messages)
         })
 
         connection.on("UserTyping", (topic, username) => {
@@ -144,6 +149,8 @@ class AuthStore {
             .then(_ => {
                 this.errorText = ""
                 this.fetchUserInfo()
+                localStorage.clear()
+                runInAction(() => this.root.chat.messages = [])
             })
     }
 
@@ -160,6 +167,7 @@ class AuthStore {
         return axios.post("/api/auth/logout", null, { withCredentials: true }).then(() => {
             this.username = null
             this.root.chat.disconnect()
+            localStorage.clear()
         })
     }
 
