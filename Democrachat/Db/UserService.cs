@@ -25,7 +25,7 @@ namespace Democrachat.Db
         public UserData? GetDataByUsername(string username)
         {
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
-            return conn.QueryFirstOrDefault<UserData>("SELECT * FROM account WHERE username = @Username", 
+            return conn.QueryFirstOrDefault<UserData>("SELECT * FROM account WHERE lower(username) = lower(@Username)", 
                 new {Username = username});
         }
 
