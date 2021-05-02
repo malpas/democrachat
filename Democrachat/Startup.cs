@@ -10,6 +10,7 @@ using Democrachat.Rewards;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,7 +50,7 @@ namespace Democrachat
             services.AddScoped<MuteService>();
             services.AddScoped<TopicBidService>();
             services.AddScoped<ILogger, Logger>();
-            services.AddSingleton<IAuthService, DbAuthService>();
+            services.AddSingleton<IAuthService, AuthService>();
             services.AddScoped<ITopicNameService, DbTopicNameService>();
             services.AddSingleton<RegisterSpamCheckService>();
             services.AddSingleton<ActiveUserService>();
@@ -72,14 +73,21 @@ namespace Democrachat
         {
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
             app.ApplicationServices.GetService<RewardService>(); // Warm up reward service for its timer event
-
+            
+            var forwardedHeadersOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            forwardedHeadersOptions.KnownNetworks.Clear();
+            forwardedHeadersOptions.KnownProxies.Clear();
+            app.UseForwardedHeaders(forwardedHeadersOptions);
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Democrachat v1"));
             }
-
             app.UseRouting();
 
             if (env.IsDevelopment())
