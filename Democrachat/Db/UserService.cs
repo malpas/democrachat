@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using Democrachat.Db.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -106,10 +107,11 @@ namespace Democrachat.Db
             return id;
         }
 
-        public void AddLogin(int id)
+        public void AddLogin(int id, IPAddress address)
         {
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
-            conn.Execute("INSERT INTO login (account_id) VALUES (@Id)", new {Id = id});
+            conn.Execute("INSERT INTO login (account_id, ip) VALUES (@Id, @Address :: cidr)", 
+                new {Id = id, Address = address.ToString()});
         }
     }
 }

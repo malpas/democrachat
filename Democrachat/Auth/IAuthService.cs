@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net;
 using Democrachat.Auth.Models;
 using Democrachat.Db.Models;
 
@@ -6,7 +7,7 @@ namespace Democrachat.Auth
 {
     public interface IAuthService
     {
-        UserData? AttemptLogin(string username, string password);
+        UserData? AttemptLogin(string username, string password, IPAddress? ip);
         RegistrationResult RegisterUser();
         UserData GetUserById(int id);
         void FinalizeNewUser(int id, string username, string password);

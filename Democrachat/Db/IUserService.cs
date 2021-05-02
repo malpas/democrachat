@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using Democrachat.Db.Models;
 
 namespace Democrachat.Db
@@ -17,6 +18,6 @@ namespace Democrachat.Db
         IEnumerable<UserData> GetOrderedUsersByWealth();
         IEnumerable<string> BatchGetUsernamesByIds(IEnumerable<int> ids);
         int RegisterUser();
-        void AddLogin(int id);
+        void AddLogin(int id, IPAddress address);
     }
 }

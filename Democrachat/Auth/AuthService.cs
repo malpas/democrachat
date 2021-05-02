@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Democrachat.Auth.Models;
 using Democrachat.Db;
 using Democrachat.Db.Models;
@@ -17,7 +18,7 @@ namespace Democrachat.Auth
             _userService = userService;
         }
 
-        public UserData? AttemptLogin(string username, string password)
+        public UserData? AttemptLogin(string username, string password, IPAddress? ip)
         {
             var userData = _userService.GetDataByUsername(username);
             if (userData == null)
@@ -30,7 +31,7 @@ namespace Democrachat.Auth
                 return null;
             }
 
-            _userService.AddLogin(userData.Id);
+            _userService.AddLogin(userData.Id, ip);
             return userData;
         }
 

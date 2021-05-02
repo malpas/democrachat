@@ -31,7 +31,8 @@ namespace Democrachat.Auth
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] Login login)
         {
-            var userData = _authService.AttemptLogin(login.Username, login.Password);
+            var userData = _authService.AttemptLogin(login.Username, login.Password, 
+                HttpContext.Connection.RemoteIpAddress);
             if (userData == null)
                 return BadRequest("Invalid username or password");
             

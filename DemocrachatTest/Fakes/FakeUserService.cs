@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Democrachat.Db;
 using Democrachat.Db.Models;
 using Microsoft.OpenApi.Validations.Rules;
@@ -93,7 +94,7 @@ namespace DemocrachatTest.Fakes
             return id;
         }
 
-        public void AddLogin(int id)
+        public void AddLogin(int id, IPAddress ip)
         {
             IsLoginLogged = true;
         }
