@@ -9,7 +9,7 @@ namespace Democrachat.Chat
 
         public ChatSpamService()
         {
-            var timer = new Timer { Interval = 15000 };
+            var timer = new Timer { Interval = 10000 };
             timer.Elapsed += (_, _) =>
             {
                 foreach (var userId in chatBudget.Keys)
