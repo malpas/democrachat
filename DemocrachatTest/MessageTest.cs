@@ -21,11 +21,13 @@ namespace DemocrachatTest
         private Mock<IHubCallerClients> _mockClients;
         private Mock<HubCallerContext> _mockContext;
         private Mock<ILogger> _mockLogger;
+        private Mock<IChatSpamService> _mockChatSpamService;
         
         private ClaimsPrincipal johnPrincipal = 
             new(new ClaimsIdentity(new [] {new Claim("Id", "10")}));
         private ClaimsPrincipal mutedGuyPrincipal = 
             new(new ClaimsIdentity(new [] {new Claim("Id", "5")}));
+
 
 
         public MessageTest()
@@ -49,7 +51,8 @@ namespace DemocrachatTest
             var mockTopicValidator = new Mock<ITopicNameService>();
             mockTopicValidator.Setup(s => s.IsValidTopic("abc")).Returns(true);
             var activeUserService = new ActiveUserService(mockUserService.Object);
-            _hub = new ChatHub(mockUserService.Object, mockTopicValidator.Object, activeUserService, _mockLogger.Object)
+            _hub = new ChatHub(mockUserService.Object, mockTopicValidator.Object, activeUserService, _mockLogger.Object,
+                new ChatSpamService())
             {
                 Context = _mockContext.Object, 
                 Clients = _mockClients.Object

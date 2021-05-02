@@ -39,7 +39,8 @@ namespace DemocrachatTest
                         default))
                 .Callback(() => { });
 
-            _hub = new ChatHub(mockUserService.Object, mockTopicService.Object, _activeUserService, mockLogger.Object)
+            _hub = new ChatHub(mockUserService.Object, mockTopicService.Object, _activeUserService, mockLogger.Object,
+                new ChatSpamService())
             {
                 Context = mockContext.Object,
                 Groups = mockGroups.Object,

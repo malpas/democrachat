@@ -32,7 +32,7 @@ namespace DemocrachatTest
             
             controller.Mute(new MuteRequest { Username = "john", Silver = 20});
             
-            mockUserService.Verify(s => s.AddMuteTime(2, TimeSpan.FromSeconds(20 * 5)));
+            mockUserService.Verify(s => s.AddMuteTime(2, TimeSpan.FromSeconds(20 * 20)));
         }
 
         [Fact]

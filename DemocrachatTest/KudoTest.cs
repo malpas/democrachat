@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography;
-using System.Threading;
 using Democrachat.Chat;
 using Democrachat.Db;
 using Democrachat.Db.Models;

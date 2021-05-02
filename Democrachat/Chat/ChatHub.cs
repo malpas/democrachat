@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Timers;
 using Castle.Core.Internal;
 using Democrachat.Db;
 using Democrachat.Log;
@@ -16,14 +18,17 @@ namespace Democrachat.Chat
         private ITopicNameService _topicNameService;
         private ActiveUserService _activeUserService;
         private ILogger _logger;
+        private IChatSpamService _spamService;
+
 
         public ChatHub(IUserService userService, ITopicNameService topicNameService,
-            ActiveUserService activeUserService, ILogger logger)
+            ActiveUserService activeUserService, ILogger logger, IChatSpamService spamService)
         {
             _userService = userService;
             _topicNameService = topicNameService;
             _activeUserService = activeUserService;
             _logger = logger;
+            _spamService = spamService;
         }
 
         public void SendMessage(string topic, string message)
@@ -41,6 +46,14 @@ namespace Democrachat.Chat
                     $"You're muted. Wait {secondsLeft} seconds.");
                 return;
             }
+
+            if (!_spamService.CanSend(userId))
+            {                
+                Clients.Caller.SendAsync("ReceiveMessage", topic, "cc",
+                    $"Uh oh, you've got 0 MessageCoins!");
+                return;
+            }
+            _spamService.MarkSend(userId);
             Clients.Group(topic).SendAsync("ReceiveMessage", topic, _userService.GetDataById(userId)?.Username, message);
             _activeUserService.AddUserToTopic(topic, userId);
             _logger.LogChatMessage(userId, topic, message);
