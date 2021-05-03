@@ -5,6 +5,7 @@
         "users"
         "messages"
         "send";
+    margin-bottom: 0;
 }
 
 .chat__messages {
@@ -22,8 +23,9 @@
 }
 
 .chat__messages__list {
-    height: calc(100vh - 21em);
+    height: calc(100vh - 24.5em);
     overflow-y: auto;
+    margin-bottom: 1em;
 }
 
 .chat__messages__message {
@@ -32,6 +34,7 @@
 
 .chat__users {
     grid-area: users;
+    word-wrap: break-word;
 }
 .chat__users__header {
     margin-top: 0;
@@ -40,7 +43,12 @@
 .chat__userlist {
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    height: 1.7em;
+    overflow-y: auto;
 }
+
 .chat__userlist__item {
     font-weight: bold;
     display: inline;
@@ -54,9 +62,16 @@
 
 .chat__send {
     grid-area: send;
+    margin-bottom: 0.5em;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 600px) {
+    .chat__messages__list {
+        height: calc(100vh - 20.5em);
+    }
+}
+
+@media (min-width: 825px) {
     .chat {
         height: calc(100vh - 6em);
         grid-template-areas: 
@@ -66,8 +81,12 @@
         grid-template-rows: auto 3em;
     }
 
+    .chat__userlist {
+        height: initial;
+    }
+
     .chat__messages__list {
-        height: calc(100vh - 15em);
+        height: calc(100vh - 11em);
     }
 
     .chat__users {

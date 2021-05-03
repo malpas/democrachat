@@ -13,3 +13,16 @@
     width: 100%;
     display: block;
 }
+
+.form--chat {
+    gap: 0.3em;
+}
+
+@media (min-width: 600px) {
+    .form--chat {
+        display: grid;
+        box-sizing:content-box;
+        grid-template-columns: 1fr 4em;
+        gap: 0.5em;
+    }
+}

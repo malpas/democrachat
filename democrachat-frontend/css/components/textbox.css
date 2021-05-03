@@ -3,6 +3,7 @@
     border-radius: 0.1em;
     padding: 0.25em;
     outline: none;
+    height: max-content;
 }
 .textbox:focus {
     border: 2px solid #5500ff;

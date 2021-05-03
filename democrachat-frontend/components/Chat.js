@@ -46,9 +46,9 @@ const ChatSender = ({ onSend, onChange }) => {
 
     return (
         <div class="chat__send">
-            <form onSubmit={onLocalSubmit} class="form form--inline">
+            <form onSubmit={onLocalSubmit} class="form form--chat">
                 <input type="text" className="textbox" value={message} onChange={onLocalChange}></input>
-                <input type="submit" class="button" value="Send"></input>
+                <input type="submit" class="button button--inline mt-0" value="Send"></input>
             </form>
         </div>
     )
@@ -119,7 +119,7 @@ const Chat = observer(({ topic }) => {
                 <ChatMessages topic={topic} messages={state.chat.messages} navigate={navigate} />
                 <ChatSender onChange={onChange} onSend={onSend} />
                 <div class="chat__users">
-                    <h2 class="chat__users__header">Users</h2>
+                    <h2 class="chat__users__header mt-1">Users</h2>
                     <UserList usernames={activeUsers} typingIndicators={state.chat.typingIndicators} />
                     {state.auth.isGuest ? (
                         <strong class="action" onClick={() => setIsFinaliseOpen(true)}>Finalise your account</strong>

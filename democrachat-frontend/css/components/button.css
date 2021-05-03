@@ -38,6 +38,12 @@
     width: 100%;
 }
 
+.button--inline {
+    display: inline;
+    height: 2em;
+    border-width: 0.1em;
+}
+
 .button--secondary {
     background-color: #b66b6b;
     border-bottom-color: #e2abd0;
