@@ -87,7 +87,7 @@ namespace DemocrachatTest.Fakes
             return ids.Select(id => UserData.First(u => u.Id == id).Username);
         }
 
-        public int RegisterUser()
+        public int RegisterUser(IPAddress address)
         {
             var id = UserData.Count;
             UserData.Add(new UserData { Id = id, Username = "user23424"});

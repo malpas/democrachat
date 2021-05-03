@@ -17,7 +17,7 @@ namespace Democrachat.Db
         void FinalizeNewUser(int id, string username, string password);
         IEnumerable<UserData> GetOrderedUsersByWealth();
         IEnumerable<string> BatchGetUsernamesByIds(IEnumerable<int> ids);
-        int RegisterUser();
+        int RegisterUser(IPAddress address);
         void AddLogin(int id, IPAddress address);
     }
 }

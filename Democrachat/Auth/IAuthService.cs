@@ -8,7 +8,7 @@ namespace Democrachat.Auth
     public interface IAuthService
     {
         UserData? AttemptLogin(string username, string password, IPAddress? ip);
-        RegistrationResult RegisterUser();
+        RegistrationResult RegisterUser(IPAddress? ip);
         UserData GetUserById(int id);
         void FinalizeNewUser(int id, string username, string password);
         bool IsUsernameTaken(string username);

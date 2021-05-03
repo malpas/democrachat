@@ -35,9 +35,9 @@ namespace Democrachat.Auth
             return userData;
         }
 
-        public RegistrationResult RegisterUser()
+        public RegistrationResult RegisterUser(IPAddress? address)
         {
-            return new(_userService.RegisterUser());
+            return new(_userService.RegisterUser(address));
         }
 
         public UserData? GetUserById(int id)

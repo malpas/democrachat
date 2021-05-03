@@ -59,7 +59,7 @@ namespace Democrachat.Auth
             {
                 return BadRequest("You created an account recently");
             }
-            var result = _authService.RegisterUser();
+            var result = _authService.RegisterUser(HttpContext.Connection.RemoteIpAddress);
             var identity = new ClaimsIdentity(new [] {new Claim("Id", result.UserId.ToString())},
                 CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);

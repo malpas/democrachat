@@ -96,7 +96,7 @@ namespace Democrachat.Db
             return conn.Query<string>(query);
         }
 
-        public int RegisterUser()
+        public int RegisterUser(IPAddress address)
         {
             var random = new Random();
             var username = $"user{random.Next(1, 100000)}";
@@ -104,6 +104,7 @@ namespace Democrachat.Db
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
             var id = conn.QueryFirst<int>("INSERT INTO account (username) VALUES (@Username) RETURNING id",
                 new { Username = username });
+            AddLogin(id, address);
             return id;
         }
 

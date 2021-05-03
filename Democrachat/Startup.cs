@@ -53,6 +53,7 @@ namespace Democrachat
             services.AddSingleton<IAuthService, AuthService>();
             services.AddScoped<ITopicNameService, DbTopicNameService>();
             services.AddSingleton<RegisterSpamCheckService>();
+            services.AddSingleton<IChatSpamService, ChatSpamService>();
             services.AddSingleton<ActiveUserService>();
 
             services.AddSingleton<RewardService>();
