@@ -33,6 +33,10 @@ namespace Democrachat.Chat
 
         public void SendMessage(string topic, string message)
         {
+            if (message.Length > 400)
+            {
+                message = message.Substring(0, 400);
+            }
             if (message.IsNullOrEmpty())
                 return;
             if (!_topicNameService.IsValidTopic(topic))
