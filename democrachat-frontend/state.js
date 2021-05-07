@@ -22,7 +22,8 @@ class ChatStore {
     messages = []
     topics = []
     typingIndicators = []
-    lastMessageTime
+    lastReceiveTime
+    lastActivityTime
 
     constructor(root) {
         this.root = root
@@ -31,6 +32,14 @@ class ChatStore {
         if (localStorage.messages) {
             this.messages = JSON.parse(localStorage.messages)
         }
+
+        setInterval(() => {
+            if (this.lastActivityTime && (Date.now() - this.lastActivityTime >= 1000 * 60 * 70)) {
+                this.root.auth.logout().then(() => {
+                    location.reload()
+                })
+            }
+        }, 5000)
     }
 
     connect() {
@@ -59,7 +68,7 @@ class ChatStore {
             if (chat) {
                 chat.scrollTop = chat.scrollHeight
             }
-            runInAction(() => this.lastMessageTime = (new Date()).getTime())
+            runInAction(() => this.lastReceiveTime = (new Date()).getTime())
             localStorage.messages = JSON.stringify(this.messages)
         })
 
@@ -106,6 +115,8 @@ class ChatStore {
     }
 
     joinTopic(name) {
+        if (!this.lastActivityTime)
+            runInAction(() => this.lastActivityTime = Date.now())
         if (this.connection?.state != HubConnectionState.Connected) return
         return this.connection.send("JoinTopic", name)
     }
@@ -116,6 +127,7 @@ class ChatStore {
 
     send(topic, message) {
         this.connection.send("SendMessage", topic, message)
+        runInAction(() => this.lastActivityTime = Date.now())
     }
 
     indicateTyping(topic) {
