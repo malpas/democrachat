@@ -33,6 +33,7 @@ namespace Democrachat.Chat
 
         public void SendMessage(string topic, string message)
         {
+            message = message.Trim();
             if (message.Length > 400)
             {
                 message = message.Substring(0, 400);
