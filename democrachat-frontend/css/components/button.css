@@ -16,7 +16,7 @@
 .button:hover {
     background-color: #7722ff;
 }
-.button:active {
+.button:active:not(:disabled) {
     top: 0.2em;
     border: none;
 }

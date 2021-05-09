@@ -54,8 +54,8 @@ const UserActions = observer(({ username, onClose }) => {
         </div>
         <div class="user-actions__buttons">
             <form className="form form--inline" onSubmit={muteUser}>
-                <input type="number" className="textbox" placeholder="silver" onChange={ev => setSilver(ev.target.value)} value={silver} />
-                <input type="submit" className="button" value="Mute" />
+                <input type="number" className="textbox" placeholder="silver" disabled={!state.auth.silver} onChange={ev => setSilver(ev.target.value)} value={silver} />
+                <input type="submit" className="button" disabled={!state.auth.silver} value="Mute" />
             </form>
             {username != state.auth.username ? videoChatButton : null}
             {username != state.auth.username ? <button className="button button--100w" onClick={giveKudo}>Kudo</button> : null}
