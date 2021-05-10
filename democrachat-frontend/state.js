@@ -175,6 +175,8 @@ class AuthStore {
 
     logout() {
         this.errorText = ""
+        this.root.userActions.userActionErrors = []
+        this.root.userActions.userActionResult = ""
 
         return axios.post("/api/auth/logout", null, { withCredentials: true }).then(() => {
             this.username = null
