@@ -158,6 +158,8 @@ namespace DemocrachatTest
             
             _kudoService.GiveKudo(1, "recipient", IPAddress.Loopback);
             _mockUserService.Verify(s => s.UpdateKudoTime(1, It.IsAny<DateTime>()));
+            _mockUserService.Verify(s => s.UpdateKudoTime(2, It.IsAny<DateTime>()),
+                 Times.Never);
         }
 
         [Fact]
