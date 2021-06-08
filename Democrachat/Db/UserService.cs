@@ -62,7 +62,7 @@ namespace Democrachat.Db
         public void UpdateKudoTime(int userId, DateTime time)
         {
             using var conn = new NpgsqlConnection(_config.GetConnectionString("Default"));
-            conn.Execute("UPDATE account SET last_kudo_time = @Time", new {Time = time});
+            conn.Execute("UPDATE account SET last_kudo_time = @Time WHERE id = @Id", new {Time = time, Id = userId});
         }
 
         public void FinalizeNewUser(int id, string username, string password)
