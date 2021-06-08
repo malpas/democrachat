@@ -35,6 +35,7 @@
 .chat__users {
     grid-area: users;
     word-wrap: break-word;
+    margin-top: auto;
 }
 .chat__users__header {
     margin-top: 0;
