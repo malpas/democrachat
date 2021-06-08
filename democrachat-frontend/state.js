@@ -84,11 +84,11 @@ class ChatStore {
         })
 
         connection.onreconnected(() => {
-            toast("Reconnected to chat", { autoClose: 3000 })
+            toast("Reconnected to chat", { autoClose: 5000 })
         })
         connection.onclose(() => {
             if (this.root.auth.username)
-                toast("Lost connection to chat", { autoClose: 3000 })
+                toast("Lost connection to chat", { autoClose: 5000 })
         })
     }
 
