@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "@reach/router"
-import axios from "axios"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect } from "react"
 import { Helmet } from "react-helmet"

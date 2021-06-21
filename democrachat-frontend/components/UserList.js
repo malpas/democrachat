@@ -14,7 +14,7 @@ const UserLi = ({ username, isTyping, onSelect }) => {
 const UserList = observer(({ usernames, typingIndicators }) => {
     const state = useContext(GlobalContext)
 
-    if (usernames.length == 0) {
+    if (!usernames || usernames.length == 0) {
         return <p>Very quiet.</p>
     }
 
@@ -27,7 +27,7 @@ const UserList = observer(({ usernames, typingIndicators }) => {
                 onClose={() => setSelectedUsername("")}
                 callStream={state.peer.remoteStream} />
             <ul className="chat__userlist">
-                {usernames.map(username => <UserLi username={username} isTyping={typingIndicators.some(ti => ti.username === username)} onSelect={setSelectedUsername} />)}
+                {Array.from(usernames).map(username => <UserLi username={username} isTyping={typingIndicators.some(ti => ti.username === username)} onSelect={setSelectedUsername} />)}
             </ul>
         </div>
     )

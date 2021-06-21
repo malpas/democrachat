@@ -55,8 +55,8 @@ const ChatSender = ({ onSend, onChange }) => {
 }
 
 const Chat = observer(({ topic }) => {
-    const [activeUsers, setActiveUsers] = useState([])
     const state = useContext(GlobalContext)
+    const activeUsers = state.chat.activeUsers[topic]
     const navigate = useNavigate()
 
     const [isFinaliseOpen, setIsFinaliseOpen] = useState()
@@ -74,12 +74,11 @@ const Chat = observer(({ topic }) => {
     useEffect(() => {
         state.chat.connect()
             .then(() => state.chat.joinTopic(topic))
-            .then(() => state.chat.getActiveUsers(topic).then(users => setActiveUsers(users)))
+            .then(() => state.chat.getActiveUsers(topic))
 
         state.peer.connectPeer()
 
         const handle = setInterval(() => {
-            state.chat.getActiveUsers(topic).then(users => setActiveUsers(users))
             state.chat.joinTopic(topic)
         }, 1000)
 

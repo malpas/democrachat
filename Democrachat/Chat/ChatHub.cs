@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Timers;
 using Castle.Core.Internal;
 using Democrachat.Db;
 using Democrachat.Log;
@@ -77,12 +76,18 @@ namespace Democrachat.Chat
             var userId = int.Parse(Context.User.FindFirstValue("Id"));
             _activeUserService.AddUserToTopic(topic, userId);
             Groups.AddToGroupAsync(Context.ConnectionId, topic);
+
+            var user = _userService.GetDataById(userId);
+            Clients.All.SendAsync("UserJoined", "general", user?.Username);
         }
 
         public void LeaveTopic(string topic)
         {
             var userId = int.Parse(Context.User.FindFirstValue("Id"));
             _activeUserService.RemoveUserFromTopic(topic, userId);
+            
+            var user = _userService.GetDataById(userId);
+            Clients.All.SendAsync("UserLeft", "general", user?.Username);
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
