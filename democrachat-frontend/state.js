@@ -168,6 +168,11 @@ class AuthStore {
 
     constructor(root) {
         this.root = root
+        setInterval(() => {
+            if (this.root.auth.username)
+                this.fetchUserInfo()
+        }, 10000)
+
         makeAutoObservable(this)
     }
 
