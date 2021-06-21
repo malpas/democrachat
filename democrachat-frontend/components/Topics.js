@@ -14,6 +14,8 @@ const Topics = observer(() => {
     useEffect(() => {
         state.chat.getTopics()
         state.chat.connect()
+
+        state.chat.topics.forEach(topic => state.chat.getActiveUsers(topic))
     }, [])
 
     const onBid = (name, silver) => {

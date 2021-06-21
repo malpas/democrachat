@@ -78,7 +78,7 @@ namespace Democrachat.Chat
             Groups.AddToGroupAsync(Context.ConnectionId, topic);
 
             var user = _userService.GetDataById(userId);
-            Clients.All.SendAsync("UserJoined", "general", user?.Username);
+            Clients.All.SendAsync("UserJoined", topic, user?.Username);
         }
 
         public void LeaveTopic(string topic)
@@ -87,12 +87,17 @@ namespace Democrachat.Chat
             _activeUserService.RemoveUserFromTopic(topic, userId);
             
             var user = _userService.GetDataById(userId);
-            Clients.All.SendAsync("UserLeft", "general", user?.Username);
+            Clients.All.SendAsync("UserLeft", topic, user?.Username);
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
             var userId = int.Parse(Context.User.FindFirstValue("Id"));
+            var user = _userService.GetDataById(userId);
+            foreach (var topic in _topicNameService.GetTopics())
+            {
+                Clients.All.SendAsync("UserLeft", topic, user?.Username);
+            }
             _activeUserService.DisconnectUser(userId);
             return base.OnDisconnectedAsync(exception);
         }

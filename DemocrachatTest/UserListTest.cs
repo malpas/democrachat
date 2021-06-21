@@ -30,7 +30,9 @@ namespace DemocrachatTest
             mockContext.Setup(c => c.User!.FindFirst(It.IsAny<string>()))
                 .Returns(new Claim("Id", "1"));
             var mockTopicService = new Mock<ITopicNameService>();
+            mockTopicService.Setup(s => s.GetTopics()).Returns(new List<string> { "general", "gaming"});
             mockTopicService.Setup(s => s.IsValidTopic("general")).Returns(true);
+            mockTopicService.Setup(s => s.IsValidTopic("gaming")).Returns(true);
             _activeUserService = new ActiveUserService(mockUserService.Object);
             var mockGroups = new Mock<IGroupManager>();
             _mockClients = new Mock<IHubCallerClients>();
@@ -53,31 +55,37 @@ namespace DemocrachatTest
             };
         }
         
-        [Fact]
-        public void AddActiveUserTopic()
+        [Theory]
+        [InlineData("general")]
+        [InlineData("gaming")]
+        public void AddActiveUserTopic(string topic)
         {
             _hub.OnConnectedAsync();
-            _hub.JoinTopic("general");
-            Assert.Contains("testuser", _activeUserService.GetUsersInTopic("general"));
+            _hub.JoinTopic(topic);
+            Assert.Contains("testuser", _activeUserService.GetUsersInTopic(topic));
         }
 
-        [Fact]
-        public void JoiningTopicSendsHubAlert()
+        [Theory]
+        [InlineData("general")]
+        [InlineData("gaming")]
+        public void JoiningTopicSendsHubAlert(string topic)
         {
             _hub.OnConnectedAsync();
-            _hub.JoinTopic("general");
+            _hub.JoinTopic(topic);
             _mockClients.Verify(c => 
-                c.All.SendCoreAsync("UserJoined", new object?[]{ "general", "testuser"}, default));
+                c.All.SendCoreAsync("UserJoined", new object?[]{ topic, "testuser"}, default));
         }
         
-        [Fact]
-        public void LeavingTopicSendsHubAlert()
+        [Theory]
+        [InlineData("general")]
+        [InlineData("gaming")]
+        public void LeavingTopicSendsHubAlert(string topic)
         {
             _hub.OnConnectedAsync();
-            _hub.JoinTopic("general");
-            _hub.LeaveTopic("general");
+            _hub.JoinTopic(topic);
+            _hub.LeaveTopic(topic);
             _mockClients.Verify(c => 
-                c.All.SendCoreAsync("UserLeft", new object?[]{ "general", "testuser"}, default));
+                c.All.SendCoreAsync("UserLeft", new object?[]{ topic, "testuser"}, default));
         }
 
         [Fact]
@@ -87,6 +95,8 @@ namespace DemocrachatTest
             _hub.JoinTopic("general");
             _hub.OnDisconnectedAsync(null);
             Assert.DoesNotContain("testuser", _activeUserService.GetUsersInTopic("general"));
+            _mockClients.Verify(c => 
+                c.All.SendCoreAsync("UserLeft", new object?[]{ "general", "testuser"}, default));
         }
 
         [Fact]
