@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Login from "./Login"
 import "../node_modules/normalize.css/normalize.css"
 import "../css/default.css"
@@ -25,6 +25,14 @@ const Home = observer(() => {
         state.auth.register()
             .then(() => setup())
     }
+
+    useEffect(() => {
+        state.auth.fetchUserInfo().then(() => {
+            if (state.auth.username) {
+                navigate("/topics")
+            }
+        })
+    }, [])
 
     return (
         <div class="home-bg">

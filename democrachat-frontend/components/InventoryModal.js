@@ -15,7 +15,8 @@ const InventoryModal = observer(() => {
     }
 
     useEffect(() => {
-        state.inventory.getInventory()
+        if (state.auth.username)
+            state.inventory.getInventory()
     }, [])
 
     const useItem = uuid => {
