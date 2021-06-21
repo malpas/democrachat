@@ -30,7 +30,7 @@ const Navbar = observer(() => {
                 <div className="navbar__right">
                     <span>{state.auth.gold}G {state.auth.silver}S</span>
                     <button className="button button--small ml-2 mt-0" onClick={toggleInventory}>Inventory</button>
-                    <div class="button button--small ml-2 mt-0 pointer" onClick={logout}>Logout</div>
+                    <div className="button button--small ml-2 mt-0 pointer" onClick={logout}>Logout</div>
                 </div> : null}
         </div>
     )

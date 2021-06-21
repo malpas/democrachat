@@ -38,13 +38,13 @@ const UserActions = observer(({ username, onClose }) => {
 
     if (!username) return null
 
-    return <div class="user-actions">
-        <div class="user-actions__header">
+    return <div className="user-actions">
+        <div className="user-actions__header">
             <h3>{username}</h3>
             <p onClick={onClose} className="pointer">X</p>
         </div>
         {state.peer.currentCall ? <video ref={videoRef} style={{ maxWidth: "100%" }} /> : null}
-        <div class="user-actions__errors">
+        <div className="user-actions__errors">
             {state.userActions.userActionResult ? <p className="text-success">{state.userActions.userActionResult}</p> : null}
             {state.userActions.userActionErrors ?
                 <ul className="text-error">
@@ -52,7 +52,7 @@ const UserActions = observer(({ username, onClose }) => {
                 </ul>
                 : null}
         </div>
-        <div class="user-actions__buttons">
+        <div className="user-actions__buttons">
             <form className="form form--inline" onSubmit={muteUser}>
                 <input type="number" className="textbox" placeholder="silver" disabled={!state.auth.silver} onChange={ev => setSilver(ev.target.value)} value={silver} />
                 <input type="submit" className="button" disabled={!state.auth.silver} value="Mute" />

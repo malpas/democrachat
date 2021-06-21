@@ -31,7 +31,7 @@ const Topics = observer(() => {
             <title>Democrachat - Topics</title>
         </Helmet>
         <div className="container container--white mb-0">
-            <div class="topics">
+            <div className="topics">
                 <h2 className="mt-0 mb-0">Topics</h2>
                 <div className="topics__list">
                     {state.chat.topics.map(topic => <TopicButton topic={topic} key={topic} onClick={() => joinTopic(topic)} />)}
