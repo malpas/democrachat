@@ -206,9 +206,9 @@ class AuthStore {
         this.root.userActions.userActionErrors = []
         this.root.userActions.userActionResult = ""
 
+        this.root.chat.disconnect()
         return axios.post("/api/auth/logout", null, { withCredentials: true }).then(() => {
             this.username = null
-            this.root.chat.disconnect()
             localStorage.clear()
         })
     }
