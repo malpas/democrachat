@@ -7,7 +7,7 @@ const TopicButton = observer(({ topic, onClick }) => {
 
     useEffect(() => {
         state.chat.getActiveUsers(topic)
-    })
+    }, [])
 
     if (state.chat?.activeUsers[topic] && state.chat.activeUsers[topic].size > 0) {
         return <button className="button button--100w button--topic" onClick={onClick}>

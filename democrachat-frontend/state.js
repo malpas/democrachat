@@ -22,6 +22,7 @@ class ChatStore {
     messages = []
     topics = []
     typingIndicators = []
+    activeUsers = {}
     lastReceiveTime
     lastActivityTime
 
@@ -46,10 +47,13 @@ class ChatStore {
         if (this.connection?.state == HubConnectionState.Connected
             || this.connection?.state == HubConnectionState.Connecting) return Promise.resolve();
 
-        if (this.connection) this.connection.stop()
+        var transport = HttpTransportType.WebSockets | HttpTransportType.ServerSentEvents | HttpTransportType.LongPolling
+        if (process.env.NODE_ENV === 'development') {
+            transport = HttpTransportType.LongPolling
+        }
 
         this.connection = new HubConnectionBuilder()
-            .withUrl("/hub/chat", { transport: HttpTransportType.ServerSentEvents })
+            .withUrl("/hub/chat", transport)
             .withAutomaticReconnect()
             .configureLogging(LogLevel.Debug)
             .build();
@@ -83,6 +87,22 @@ class ChatStore {
             }, 1000);
         })
 
+        connection.on("UserJoined", (topic, username) => {
+            runInAction(() => {
+                if (!this.activeUsers[topic])
+                    this.activeUsers[topic] = new Set();
+                this.activeUsers[topic].add(username);
+            })
+        })
+
+        connection.on("UserLeft", (topic, username) => {
+            runInAction(() => {
+                if (!this.activeUsers[topic])
+                    this.activeUsers[topic] = new Set();
+                this.activeUsers[topic].delete(username);
+            })
+        })
+
         connection.onreconnected(() => {
             toast("Reconnected to chat", { autoClose: 5000 })
         })
@@ -107,11 +127,14 @@ class ChatStore {
     }
 
     getActiveUsers(topic) {
-        return axios.get(`/api/topicActivity/${topic}`, { withCredentials: true })
-            .then(resp => {
-                return Promise.resolve(resp.data)
-            })
-            .catch(_ => Promise.reject());
+        runInAction(() => {
+            return axios.get(`/api/topicActivity/${topic}`, { withCredentials: true })
+                .then(resp => {
+                    this.activeUsers[topic] = new Set(resp.data)
+                    return Promise.resolve(resp.data)
+                })
+                .catch(_ => Promise.reject());
+        })
     }
 
     joinTopic(name) {
