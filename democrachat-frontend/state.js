@@ -103,6 +103,14 @@ class ChatStore {
             })
         })
 
+        connection.on("ObsoleteUsername", username => {
+            runInAction(() => {
+                Object.keys(this.activeUsers).forEach(topic => {
+                    this.activeUsers[topic].delete(username)
+                });
+            })
+        })
+
         connection.onreconnected(() => {
             toast("Reconnected to chat", { autoClose: 5000 })
         })

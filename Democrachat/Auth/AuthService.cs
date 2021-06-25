@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Democrachat.Auth.Models;
+using Democrachat.Chat;
 using Democrachat.Db;
 using Democrachat.Db.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Democrachat.Auth
 {
@@ -12,10 +14,12 @@ namespace Democrachat.Auth
     {
         public static List<string> NaughtyWordList = new() {"cunt", "penis", "nigger", "fag", "pussy"};
         private IUserService _userService;
+        private IHubContext<ChatHub> _chatHub;
 
-        public AuthService(IUserService userService)
+        public AuthService(IUserService userService, IHubContext<ChatHub> chatHub)
         {
             _userService = userService;
+            _chatHub = chatHub;
         }
 
         public UserData? AttemptLogin(string username, string password, IPAddress? ip)
@@ -61,6 +65,8 @@ namespace Democrachat.Auth
                 throw new InvalidOperationException($"Cannot rename full account");
             if (IsUsernameTaken(username) || NaughtyWordList.Any(word => username.Contains(word)))
                 throw new InvalidOperationException($"User \"{username}\" is already taken");
+            var oldUsername = userData.Username;
+            _chatHub.Clients.All.SendAsync("ObsoleteUsername", oldUsername);
             _userService.FinalizeNewUser(id, username, password);
         }
 
