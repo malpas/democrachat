@@ -23,26 +23,11 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
     "react-toastify": "^7.0.3",
     "styled": "^1.0.0",
     "styled-components": "^5.2.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.8",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/preset-env": "^7.13.9",
-    "@babel/preset-react": "^7.12.13",
-    "@parcel/optimizer-cssnano": "^2.0.0-nightly.617",
-    "@parcel/optimizer-htmlnano": "^2.0.0-nightly.617",
-    "@parcel/packager-css": "^2.0.0-nightly.617",
-    "@parcel/packager-html": "^2.0.0-nightly.617",
-    "@parcel/transformer-css": "^2.0.0-nightly.617",
-    "@parcel/transformer-html": "^2.0.0-nightly.617",
-    "@parcel/transformer-postcss": "^2.0.0-nightly.617",
-    "@parcel/transformer-posthtml": "^2.0.0-nightly.617",
-    "parcel": "^2.0.0-beta.1",
-    "postcss": "^8.2.7"
+    "parcel": "^2.0.0"
   }
 }

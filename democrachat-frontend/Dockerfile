@@ -1,6 +1,6 @@
 FROM node AS build
 WORKDIR /build
-RUN yarn add -D parcel@next
+RUN yarn add -D parcel
 COPY . .
 RUN yarn install
 RUN yarn run build 
