@@ -6,11 +6,14 @@ The platform is designed to be as transparent as possible through a public trans
 
 The platform was run publically on the internet for a few months and demonstrated the whole idea is (probably) a mistake. Docker images have been set up for convenience of use and deployment.
 
-# Features
+## Features
 * Text chat with user-selectable topics
 * Moderation through experimental two-tier "voting" currency
 * Video chat with [PeerJS](https://github.com/peers/peerjs)
 * User inventory -- users can gift each other random items
+
+# Screenshots
+![Screenshots](https://user-images.githubusercontent.com/40313754/139515862-d705db44-2cfc-4d47-b3cf-d0d344a72e5f.png)
 
 # Usage
 ## Requirements
@@ -27,12 +30,12 @@ Now go to `http://localhost:8080` This is enough to test the chatting features. 
 1. Finalise a user with any name (e.g. "admin")
 2. Run `docker exec -it democrachat_postgres_1 psql -U postgres -d democrachat -c "UPDATE account SET gold = 999, silver = 999 WHERE username = 'admin'"`
 
-### Example liquibase.properties
+#### Example liquibase.properties
 ```
 url: jdbc:postgresql://localhost:5432/democrachat?user=postgres&password=CHANGETHIS
 ```
 
-## Automated Tests
+### Automated Tests
 
 There are automated integration and unit tests. With the postgres image up, run `CUSTOMCONNSTR_Default="Host=localhost;Database=democrachat;Username=postgres;Password=CHANGETHIS;" dotnet test`
 
